@@ -46,9 +46,47 @@ function mkdir() {
     cu
 }
 
-// function echo(){
+function echo(commandline) {
+    //let directoryTree = JSON.parse(localStorage.getItem("directoryTree"))
+
+    let echoParameters = [];
+    let textToEvalue;
+    for (let index = 2; index < commandline.length; index++) {
+        echoParameters.push(commandline[index]);
+    }
+    //console.log(echoParameters);
+    textToEvalue = echoParameters.join("");
+    if (/^>>/.test(textToEvalue)) {
+        echoParameters = textToEvalue.split(">>");
+        var newfileObject = {
+            name: echoParameters[1],
+            text: echoParameters[0],
+            }
+        
+            actualDirectory.files.forEach(element => {
+                if (element.name == echoParameters[1]) {
+                    element.text += echoParameters[0];
+                }
+            });
+
+    } else if (/^>/.test(textToEvalue)) {
+        echoParameters = textToEvalue.split(">");
+        var newfileObject = {
+            name: echoParameters[1],
+            text: echoParameters[0],
+            }
+
+        actualDirectory.files.push(newfileObject);
+    } else {
+        alert("no");
+    }
     
-// }
+    //console.log(echoParameters);
+
+    /* me llega la ruta: carpeta0/carpeta1 */
+    /* var actualDirectory = ruta(); */
+    
+}
 
 // function cat() {
     
@@ -87,6 +125,9 @@ function checkValidCommand(){
     case "cd":
         cd(stringInWords[2]);
         saveInHistory();
+        break;
+    case "echo":
+        echo(stringInWords);
         break;
     default:
         console.log("Invalid command madafaka, try again");
