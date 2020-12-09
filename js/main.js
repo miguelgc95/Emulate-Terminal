@@ -28,9 +28,26 @@ function pwd() {
     alert("You are in "+path);
 }
 
-// function ls() {
+function ls(option) {
+    //localStorage.getItem("directoryTree");
     
-// }
+    let listToShow = [];
+    for (let index = 0; index < directoryTree.files.length; index++) {
+        listToShow.push(directoryTree.files[index].name);
+    }
+    for (let index = 0; index < directoryTree.folder.length; index++) {
+        listToShow.push(directoryTree.folder[index].name);
+    }
+    
+    document.getElementById(contador).innerHTML = listToShow.join(" ");
+
+    /* Option R */
+    if (option == "-R") {
+
+    }
+    
+    newtextArea();
+}
 
 function cd(whereToMove) {
     console.log("entro en cd");
@@ -86,6 +103,10 @@ function checkValidCommand(){
         break;
     case "cd":
         cd(stringInWords[2]);
+        saveInHistory();
+        break;
+    case "ls":
+        ls(stringInWords[2]);
         saveInHistory();
         break;
     default:
