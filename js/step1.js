@@ -34,7 +34,8 @@ function autowrite(e){
         e.preventDefault();
         this.removeEventListener('keydown', autowrite);
         this.removeEventListener('keydown', autosize);
-        this.setAttribute("readonly", true)
+        this.setAttribute("readonly", true);
+        checkValidCommand();
         newtextArea();
         }
 }

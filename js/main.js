@@ -73,11 +73,11 @@ function saveInHistory(){
     var historyArray = JSON.parse(localStorage.getItem("history"));
     historyArray.push(document.getElementById("comd").value);
     localStorage.setItem("history",JSON.stringify(historyArray));
-    document.getElementById("comd").value="";
+    document.getElementById(contador).value="";
 }
 
 function checkValidCommand(){
-    var stringInWords=document.getElementById("comd").value.split(' ');
+    var stringInWords=document.getElementById(contador).value.split(' ');
     console.log(stringInWords[0])
     switch(stringInWords[0]){
     case "pwd":
@@ -90,13 +90,10 @@ function checkValidCommand(){
         break;
     default:
         console.log("Invalid command madafaka, try again");
-        document.getElementById("comd").value="";
+        document.getElementById(contador).value="";
     }
 }
 
-function preventSendForm(event) {
-    event.preventDefault();
-    checkValidCommand();
-}
+/* l */
 
-document.getElementById("enter").addEventListener("click", preventSendForm);
+/* document.getElementById("enter").addEventListener("click", preventSendForm); */
