@@ -1,11 +1,10 @@
-
 var contador = 0;
 newtextArea();
 
 function newtextArea() {
     contador ++;
     var textareaElement = document.createElement("TEXTAREA");
-    var textareaContent = document.createTextNode("~$");
+    var textareaContent = document.createTextNode("~$ ");
     textareaElement.appendChild(textareaContent);
     var parentNode = document.getElementById("textsArea-container");
     var newElement = parentNode.appendChild(textareaElement);
