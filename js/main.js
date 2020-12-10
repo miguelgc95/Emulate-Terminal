@@ -100,23 +100,6 @@ function cd(whereToMove){
     })
     path+=("/"+whereToMove)
 }
-/*
-function cd(whereToMove){
-    
-    path+=('/'+whereToMove)
-
-
-    eval(currentPath).folders.forEach((x,i)=>{
-        if (x.name === whereToMove) {
-            currentPath += `.folders[${i}]`
-            console.log(currentPath);
-
-        }
-    })
-    path+=("/"+whereToMove)
-     
-}
- */
 
 function cd2() {
     var pathInWords=path.split(' ');
@@ -124,9 +107,15 @@ function cd2() {
 }
 
 function mkdir(name){
-    myObj.name = name
-    myObj.time = //segundos desde 1970
-    eval(currentPath).folders.push(myObj)
+    let time = new Date().getTime()
+    // console.log(time);
+    let myObj ={
+        name : name,
+        time : time,
+        folders : [],
+        files : []
+    }
+    eval(currentPath).folders.push(myObj);
 }
 
 
