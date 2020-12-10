@@ -2,7 +2,16 @@
 localStorage.setItem("commands",JSON.stringify(["pwd", "ls", "cd", "cd..", "mkdir", "echo", "cat", "rm", "mv", "clear"]));
 localStorage.setItem("history",JSON.stringify([]));
 
+<<<<<<< HEAD
 var path="/root";//a dinamic string where to store the currett work folder
+=======
+
+
+
+
+
+var path="Root";//a dinamic string where to store the currett work folder
+>>>>>>> master
 let currentPath = 'directoryTree';
 
 let directoryTree = {
@@ -18,6 +27,19 @@ let myObj ={
 }
 
 //flow functions
+getLocalStorage()
+function getLocalStorage(){
+    if (localStorage.getItem('root') === null) {
+        localStorage.setItem('root',JSON.stringify(directoryTree))
+        console.log('lo creo');
+    }else{
+        directoryTree = JSON.parse(localStorage.getItem('root'))
+        console.log('lo cojo');
+    }
+}
+function setLocalStorage(){
+    localStorage.setItem('root',JSON.stringify(directoryTree))
+}
 
 function saveInHistory(){
     var historyArray = JSON.parse(localStorage.getItem("history"));
@@ -48,22 +70,29 @@ function checkValidCommand(){
         break;
     case "echo":
         echo(stringInWords);
+        setLocalStorage()
         break;
     case "mkdir":
         mkdir(stringInWords[2])
         saveInHistory();
+        setLocalStorage()
+        break;
+    case "rm":
+        rm(stringInWords)
+        saveInHistory();
+        
         break;
     default:
         console.log("Invalid command madafaka, try again");
         //document.getElementById(contador).value="";
-    }
-
+    }   
 //commands functions
 function pwd() {
     alert("You are in "+path);
 }
 
 function cd(whereToMove){
+<<<<<<< HEAD
     console.log("entro a cd")
     var flag=true;
     eval(currentPath).folders.forEach((x,i)=>{
@@ -76,6 +105,17 @@ function cd(whereToMove){
     if (flag){
         console.log("esa carpeta no existe")
     }
+=======
+    path+=('/'+whereToMove)
+    eval(currentPath).folders.forEach((x,i)=>{
+        if (x.name === whereToMove) {
+            currentPath += `.folders[${i}]`
+            console.log(currentPath);
+
+        }
+    })
+    path+=("/"+whereToMove)
+>>>>>>> master
 }
 
 function cd2() {
@@ -92,9 +132,15 @@ function cd2() {
 }
 
 function mkdir(name){
-    myObj.name = name
-    myObj.time = //segundos desde 1970
-    eval(currentPath).folders.push(myObj)
+    let time = new Date().getTime()
+    // console.log(time);
+    let myObj ={
+        name : name,
+        time : time,
+        folders : [],
+        files : []
+    }
+    eval(currentPath).folders.push(myObj);
 }
 
 
@@ -152,5 +198,19 @@ function ls(option) {
     if (option == "-R") {
     newtextArea();
         }
+    }
+} function rm(string){
+    console.log(string);
+    switch(string[2]){
+        case '-r': 
+            console.log('estas en -r');
+            break
+        case '-d': 
+            console.log('estas en -d');
+            break
+        default:
+            console.log('estas en default');
+
+
     }
 }
