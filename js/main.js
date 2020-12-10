@@ -2,6 +2,11 @@
 localStorage.setItem("commands",JSON.stringify(["pwd", "ls", "cd", "cd..", "mkdir", "echo", "cat", "rm", "mv", "clear"]));
 localStorage.setItem("history",JSON.stringify([]));
 
+
+
+
+
+
 var path="Root";//a dinamic string where to store the currett work folder
 let currentPath = 'directoryTree';
 
@@ -18,6 +23,19 @@ let myObj ={
 }
 
 //flow functions
+getLocalStorage()
+function getLocalStorage(){
+    if (localStorage.getItem('root') === null) {
+        localStorage.setItem('root',JSON.stringify(directoryTree))
+        console.log('lo creo');
+    }else{
+        directoryTree = JSON.parse(localStorage.getItem('root'))
+        console.log('lo cojo');
+    }
+}
+function setLocalStorage(){
+    localStorage.setItem('root',JSON.stringify(directoryTree))
+}
 
 function saveInHistory(){
     var historyArray = JSON.parse(localStorage.getItem("history"));
@@ -43,10 +61,17 @@ function checkValidCommand(){
         break;
     case "echo":
         echo(stringInWords);
+        setLocalStorage()
         break;
     case "mkdir":
         mkdir(stringInWords[2])
         saveInHistory();
+        setLocalStorage()
+        break;
+    case "rm":
+        rm(stringInWords)
+        saveInHistory();
+        
         break;
     case "ls":
         ls(stringInWords[2])
@@ -163,4 +188,20 @@ function ls(option) {
     /* Option R */
     if (option == "-R") {
         }
+    
+} 
+function rm(string){
+    console.log(string);
+    switch(string[2]){
+        case '-r': 
+            console.log('estas en -r');
+            break
+        case '-d': 
+            console.log('estas en -d');
+            break
+        default:
+            console.log('estas en default');
+
+
+    }
 }
