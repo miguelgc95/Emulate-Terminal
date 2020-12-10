@@ -48,10 +48,15 @@ function checkValidCommand(){
         mkdir(stringInWords[2])
         saveInHistory();
         break;
+    case "ls":
+        ls(stringInWords[2])
+        saveInHistory();
+        break;
     default:
         console.log("Invalid command madafaka, try again");
         //document.getElementById(contador).value="";
     }
+}
 
 //commands functions
 function pwd() {
@@ -140,19 +145,22 @@ function echo(commandline) {
 }
 
 function ls(option) {
-    //localStorage.getItem("directoryTree");
     let listToShow = [];
-    for (let index = 0; index < directoryTree.files.length; index++) {
-        listToShow.push(directoryTree.files[index].name);
+    if (option == undefined) {
+        for (let index = 0; index < eval(directoryTree).files.length; index++) {
+            listToShow.push(eval(directoryTree).files[index].name);
+        }
+        for (let index = 0; index < eval(directoryTree).folders.length; index++) {
+            listToShow.push(eval(directoryTree).folders[index].name);
+        }
+        /* console.log(listToShow)
+        console.log(document.getElementById(contador).innerHTML)
+        console.log(listToShow.join(" ")) */
+        newtextArea();
+        document.getElementById(contador).value += listToShow.join(" ");
     }
-    for (let index = 0; index < directoryTree.folder.length; index++) {
-        listToShow.push(directoryTree.folder[index].name);
-    }
-    document.getElementById(contador).innerHTML = listToShow.join(" ");
 
     /* Option R */
     if (option == "-R") {
-    newtextArea();
         }
-    }
 }
