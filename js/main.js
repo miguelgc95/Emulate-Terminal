@@ -3,43 +3,7 @@ localStorage.setItem("commands",JSON.stringify(["pwd", "ls", "cd", "cd..", "mkdi
 localStorage.setItem("history",JSON.stringify([]));
 
 var path="directoryTree";//a dinamic string where to store the currett work folder
-
-//commands functions
-
-function pwd() {
-    console.log("entro en pwd");
-    alert("You are in "+path);
-}
-
-// function ls() {
-
-// }
-let currentPath = 'directoryTree'
-function cd(whereToMove){
-    
-    path+=('/'+whereToMove)
-
-
-    eval(currentPath).folders.forEach((x,i)=>{
-        if (x.name === whereToMove) {
-            currentPath += `.folders[${i}]`
-            console.log(currentPath);
-
-        }
-    })
-    path+=("/"+whereToMove)
-     
-}
-
-
-// function cd2() {
-    
-// }
-
-// function mkdir() {
-
-// }
-
+let currentPath = 'directoryTree';
 let directoryTree = {
     folders: [ /* 0 -> folderObject === CARPETA1*/ {
         name: "carpeta1",
@@ -98,79 +62,6 @@ content: "contentFile2"
 ]
 };
 
-function echo(commandline) {
-    //let directoryTree = JSON.parse(localStorage.getItem("directoryTree"))
-
-    console.log(directoryTree);
-    //obtencion de la ruta llamando a la funcion:
-    // ejemplo: rutaPrueba = carpera1/carpera1.1
-    // situacion dentro del local Store: directoryTree[0].folders[0].files.push
-
-    let echoParameters = [];
-    let textToEvalue;
-    for (let index = 2; index < commandline.length; index++) {
-        echoParameters.push(commandline[index]);
-    }
-    //console.log(echoParameters);
-    textToEvalue = echoParameters.join("");
-    console.log(textToEvalue);
-    if (textToEvalue.includes(">>")) {
-        echoParameters = textToEvalue.split(">>");
-        var newfileObject = {
-            name: echoParameters[1],
-            text: echoParameters[0],
-            }
-
-            eval(currentPath).files.forEach(element => {
-                if (element.name == echoParameters[1]) {
-                    element.text += echoParameters[0];
-                }
-            });
-        
-            /* actualDirectory.files.forEach(element => {
-                if (element.name == echoParameters[1]) {
-                    element.text += echoParameters[0];
-                }
-            }); */
-
-    } else if (textToEvalue.includes(">")) {
-        echoParameters = textToEvalue.split(">");
-        var newfileObject = {
-            name: echoParameters[1],
-            content: echoParameters[0],
-            }
-
-    eval(currentPath).files.push(newfileObject);
-    console.log(directoryTree);
-
-    } else {
-        alert("no");
-    }
-    
-    //console.log(echoParameters);
-
-    /* me llega la ruta: carpeta0/carpeta1 */
-    /* var actualDirectory = ruta(); */
-    
-}
-
-// function cat() {
-    
-// }
-
-// function rm() {
-    
-// }
-
-// function mv() {
-    
-// }
-
-// function clear() {
-    
-// }
-
-
 //flow functions
 
 function saveInHistory(){
@@ -192,8 +83,9 @@ function checkValidCommand(){
         cd(stringInWords[2]);
         saveInHistory();
         break;
-    case "echo":
-        echo(stringInWords);
+    case "ls":
+        ls(stringInWords[2]);
+        saveInHistory();
         break;
     default:
         console.log("Invalid command madafaka, try again");
@@ -201,6 +93,85 @@ function checkValidCommand(){
     }
 }
 
-/* l */
 
-/* document.getElementById("enter").addEventListener("click", preventSendForm); */
+//commands functions
+
+function cd(whereToMove){
+    
+    path+=('/'+whereToMove)
+
+
+    eval(currentPath).folders.forEach((x,i)=>{
+        if (x.name === whereToMove) {
+            currentPath += `.folders[${i}]`
+            console.log(currentPath);
+
+        }
+    })
+    path+=("/"+whereToMove)
+     
+}
+function echo(commandline) {
+
+    console.log(directoryTree);
+
+    let echoParameters = [];
+    let textToEvalue;
+    for (let index = 2; index < commandline.length; index++) {
+        echoParameters.push(commandline[index]);
+    }
+    textToEvalue = echoParameters.join("");
+    console.log(textToEvalue);
+    if (textToEvalue.includes(">>")) {
+        echoParameters = textToEvalue.split(">>");
+        var newfileObject = {
+            name: echoParameters[1],
+            text: echoParameters[0],
+            }
+
+            eval(currentPath).files.forEach(element => {
+                if (element.name == echoParameters[1]) {
+                    element.text += echoParameters[0];
+                }
+            });
+
+    } else if (textToEvalue.includes(">")) {
+        echoParameters = textToEvalue.split(">");
+        var newfileObject = {
+            name: echoParameters[1],
+            content: echoParameters[0],
+            }
+
+    eval(currentPath).files.push(newfileObject);
+    console.log(directoryTree);
+
+    } else {
+        alert("no");
+    }
+}
+
+function pwd() {
+    console.log("entro en pwd");
+    alert("You are in "+path);
+}
+
+function ls(option) {
+    //localStorage.getItem("directoryTree");
+    
+    let listToShow = [];
+    for (let index = 0; index < directoryTree.files.length; index++) {
+        listToShow.push(directoryTree.files[index].name);
+    }
+    for (let index = 0; index < directoryTree.folder.length; index++) {
+        listToShow.push(directoryTree.folder[index].name);
+    }
+    
+    document.getElementById(contador).innerHTML = listToShow.join(" ");
+
+    /* Option R */
+    if (option == "-R") {
+
+    }
+    
+    newtextArea();
+}
