@@ -4,10 +4,10 @@ localStorage.setItem("history",JSON.stringify([]));
 
 var path="root";//a dinamic string where to store the currett work foulder
 
-var directoryTree = {
+/* var directoryTree = {
     rootFolders:[],
     rootFiles:[]
-}
+} */
 
 /* var foulderObject = {
     folders:[],
@@ -46,10 +46,7 @@ function mkdir() {
     cu
 }
 
-function echo(commandline) {
-    //let directoryTree = JSON.parse(localStorage.getItem("directoryTree"))
-
-    let directoryTree = [
+let directoryTree = [
     /* 0 */ [
                 /* 0 -> folderObject === CARPETA1*/ {
                     name: "carpeta1",
@@ -107,6 +104,10 @@ function echo(commandline) {
             }
         ]
     ];
+
+function echo(commandline) {
+    //let directoryTree = JSON.parse(localStorage.getItem("directoryTree"))
+
     console.log(directoryTree);
     //obtencion de la ruta llamando a la funcion:
     // ejemplo: rutaPrueba = carpera1/carpera1.1
