@@ -4,36 +4,6 @@ localStorage.setItem("history",JSON.stringify([]));
 
 var path="directoryTree";//a dinamic string where to store the currett work folder
 
-var directoryTree = {
-    folders:[
-        {
-            name: "folder1",
-            folders:[
-                {
-                    name: "folder3",
-                    folders:[],
-                    files:[]
-                }
-            ],
-            files:[]
-        },
-        {
-            name: "folder2",
-            folders:[
-                {
-                    name: "folder3",
-                    folders:[],
-                    files:[]
-                }
-            ],
-            files:[]
-        },
-    ],
-
-    files:[]
-}
-
-
 //commands functions
 
 function pwd() {
@@ -70,64 +40,63 @@ function cd(whereToMove){
 
 // }
 
-let directoryTree = [
-    /* 0 */ [
-                /* 0 -> folderObject === CARPETA1*/ {
-                    name: "carpeta1",
-                    folders: [  // CARPETAS DENTRO DE CARPETA1
-                /* 0.folders */        /* 0 -> folderObject === CARPETA1 DENTRO DE CARPETA1*/ {
-                                name: "carpeta1.1",
-                                folders: [],
-                                files: []
-                        },
-                /* 0.folders */       /* 1 -> folderObject === CARPETA2 DENTRO DE CARPETA1*/ {
-                                name: "carpeta1.2",
-                                folders: [],
-                                files: [
-                                        ]
-                        }
-                    ],
-                    files: [  // ARCHIVOS DENTRO DE CARPETA1
-                /* 0.files */        /* 0 -> fileObject === Archivo1 DENTRO DE CARPETA1*/ {
-                                        name: "Archivo1.1",
-                                        content: "contenido Archivo1.1"
-                                },
-                /* 0.files */       /* 1 -> folderObject === Archivo2 DENTRO DE CARPETA1*/ {
-                                        name: "Archivo1.2",
-                                        content: "contenido Archivo1.2"
-                                }
-                            ]
-                },
-                /* 1 -> folderObject === CARPETA2*/ {
-                    name: "carpeta2",
-                    folders: [  // CARPETAS DENTRO DE CARPETA2
-                /* 1.folders */        /* 0 -> folderObject === CARPETA1 DENTRO DE CARPETA2*/ {
-                                name: "carpeta2.1",
-                                folders: [],
-                                files: [
-                                        ]
-                        },
-                    ],
-                    files: [  // ARCHIVOS DENTRO DE CARPETA2
-                /* 1.files */        /* 0 -> fileObject === Archivo1 DENTRO DE CARPETA2*/ {
-                                        name: "Archivo1.2",
-                                        content: "contenido Archivo1.2"
-                                },
-                            ]
-                }
-        ],
-
-    /* 1 */ [
-        /* 0 -> fileObject === File1 del rootActual*/ {
-            name: "file1",
-            content: "contentFile1"
+let directoryTree = {
+    folders: [ /* 0 -> folderObject === CARPETA1*/ {
+        name: "carpeta1",
+        folders: [  // CARPETAS DENTRO DE CARPETA1
+    /* 0.folders */        /* 0 -> folderObject === CARPETA1 DENTRO DE CARPETA1*/ {
+                    name: "carpeta1.1",
+                    folders: [],
+                    files: []
             },
-        /* 1 -> fileObject === File2 del rootActual*/ {
-            name: "file2",
-            content: "contentFile2"
+    /* 0.folders */       /* 1 -> folderObject === CARPETA2 DENTRO DE CARPETA1*/ {
+                    name: "carpeta1.2",
+                    folders: [],
+                    files: [
+                            ]
             }
-        ]
-    ];
+        ],
+        files: [  // ARCHIVOS DENTRO DE CARPETA1
+    /* 0.files */        /* 0 -> fileObject === Archivo1 DENTRO DE CARPETA1*/ {
+                            name: "Archivo1.1",
+                            content: "contenido Archivo1.1"
+                    },
+    /* 0.files */       /* 1 -> folderObject === Archivo2 DENTRO DE CARPETA1*/ {
+                            name: "Archivo1.2",
+                            content: "contenido Archivo1.2"
+                    }
+                ]
+    },
+    /* 1 -> folderObject === CARPETA2*/ {
+        name: "carpeta2",
+        folders: [  // CARPETAS DENTRO DE CARPETA2
+    /* 1.folders */        /* 0 -> folderObject === CARPETA1 DENTRO DE CARPETA2*/ {
+                    name: "carpeta2.1",
+                    folders: [],
+                    files: [
+                            ]
+            },
+        ],
+        files: [  // ARCHIVOS DENTRO DE CARPETA2
+    /* 1.files */        /* 0 -> fileObject === Archivo1 DENTRO DE CARPETA2*/ {
+                            name: "Archivo1.2",
+                            content: "contenido Archivo1.2"
+                    },
+                ]
+    }
+],
+
+/* 1 */ files: [
+/* 0 -> fileObject === File1 del rootActual*/ {
+name: "file1",
+content: "contentFile1"
+},
+/* 1 -> fileObject === File2 del rootActual*/ {
+name: "file2",
+content: "contentFile2"
+}
+]
+};
 
 function echo(commandline) {
     //let directoryTree = JSON.parse(localStorage.getItem("directoryTree"))
@@ -151,12 +120,18 @@ function echo(commandline) {
             name: echoParameters[1],
             text: echoParameters[0],
             }
-        
-            actualDirectory.files.forEach(element => {
+
+            eval(currentPath).files.forEach(element => {
                 if (element.name == echoParameters[1]) {
                     element.text += echoParameters[0];
                 }
             });
+        
+            /* actualDirectory.files.forEach(element => {
+                if (element.name == echoParameters[1]) {
+                    element.text += echoParameters[0];
+                }
+            }); */
 
     } else if (textToEvalue.includes(">")) {
         echoParameters = textToEvalue.split(">");
@@ -165,12 +140,9 @@ function echo(commandline) {
             content: echoParameters[0],
             }
 
-       // actualDirectory.files.push(newfileObject);
-        console.log(newfileObject);
-        console.log(directoryTree[0][0].folders)
+    eval(currentPath).files.push(newfileObject);
+    console.log(directoryTree);
 
-        directoryTree[0][0].folders[0].files.push(newfileObject);
-        console.log(directoryTree);
     } else {
         alert("no");
     }
