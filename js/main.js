@@ -83,6 +83,10 @@ function checkValidCommand(){
         cd(stringInWords[2]);
         saveInHistory();
         break;
+    case "echo":
+        echo(stringInWords);
+        saveInHistory();
+        break;
     case "ls":
         ls(stringInWords[2]);
         saveInHistory();
@@ -126,12 +130,12 @@ function echo(commandline) {
         echoParameters = textToEvalue.split(">>");
         var newfileObject = {
             name: echoParameters[1],
-            text: echoParameters[0],
+            content: echoParameters[0],
             }
 
             eval(currentPath).files.forEach(element => {
                 if (element.name == echoParameters[1]) {
-                    element.text += echoParameters[0];
+                    element.content += echoParameters[0];
                 }
             });
 
