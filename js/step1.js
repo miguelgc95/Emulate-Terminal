@@ -60,5 +60,3 @@ function preventDeleteDefaultText(e){
         e.preventDefault();
     }
 }
-
-

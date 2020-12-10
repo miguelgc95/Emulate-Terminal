@@ -2,24 +2,37 @@
 localStorage.setItem("commands",JSON.stringify(["pwd", "ls", "cd", "cd..", "mkdir", "echo", "cat", "rm", "mv", "clear"]));
 localStorage.setItem("history",JSON.stringify([]));
 
-var path="root";//a dinamic string where to store the currett work foulder
+var path="directoryTree";//a dinamic string where to store the currett work folder
 
 var directoryTree = {
-    rootFolders:[],
-    rootFiles:[]
+    folders:[
+        {
+            name: "folder1",
+            folders:[
+                {
+                    name: "folder3",
+                    folders:[],
+                    files:[]
+                }
+            ],
+            files:[]
+        },
+        {
+            name: "folder2",
+            folders:[
+                {
+                    name: "folder3",
+                    folders:[],
+                    files:[]
+                }
+            ],
+            files:[]
+        },
+    ],
+
+    files:[]
 }
 
-/* var foulderObject = {
-    folders:[],
-    files:[],
-} */
-
-/* var fileObject = {
-    name:"",
-    text:"",
-} */
-
-localStorage.setItem("history",JSON.stringify([]));
 
 //commands functions
 
@@ -29,22 +42,33 @@ function pwd() {
 }
 
 // function ls() {
-    
-// }
 
-function cd(whereToMove) {
-    console.log("entro en cd");
-    path+=("/"+whereToMove);
+// }
+let currentPath = 'directoryTree'
+function cd(whereToMove){
+    
+    path+=('/'+whereToMove)
+
+
+    eval(currentPath).folders.forEach((x,i)=>{
+        if (x.name === whereToMove) {
+            currentPath += `.folders[${i}]`
+            console.log(currentPath);
+
+        }
+    })
+    path+=("/"+whereToMove)
+     
 }
+
 
 // function cd2() {
     
 // }
 
-function mkdir() {
-    var currentDirectoryWords = path.split('/');
-    cu
-}
+// function mkdir() {
+
+// }
 
 // function echo(){
     
