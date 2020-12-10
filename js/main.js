@@ -178,18 +178,30 @@ function ls(option) {
         for (let index = 0; index < eval(directoryTree).folders.length; index++) {
             listToShow.push(eval(directoryTree).folders[index].name);
         }
-        /* console.log(listToShow)
-        console.log(document.getElementById(contador).innerHTML)
-        console.log(listToShow.join(" ")) */
         newtextArea();
         document.getElementById(contador).value += listToShow.join(" ");
     }
 
     /* Option R */
     if (option == "-R") {
+        for (let index = 0; index < eval(directoryTree).files.length; index++) {
+            listToShow.push(eval(directoryTree).files[index].name);
         }
-    
-} 
+        for (let index = 0; index < eval(directoryTree).folders.length; index++) {
+            listToShow.push(eval(directoryTree).folders[index].name);
+        }
+        newtextArea();
+        document.getElementById(contador).value += listToShow.join(" ");
+        let showfoldersR = [];
+        showfoldersR.push(listToShow);
+        for (let index = 0; index < eval(directoryTree).folders.length; index++) {
+            
+            showfoldersR.push(eval(directoryTree).folders[index].files);
+        }
+        /* '\n' */
+    }
+}
+
 function rm(string){
     console.log(string);
     switch(string[2]){
