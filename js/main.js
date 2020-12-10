@@ -32,71 +32,28 @@ function cd(whereToMove){
 }
 
 
-// function cd2() {
-    
-// }
+function cd2() {
+    var pathInWords=path.split(' ');
+    pathInWords.pop()
+}
 
-// function mkdir() {
-
-// }
+function mkdir(name){
+    myObj.name = name
+    myObj.time = //segundos desde 1970
+    currentPath.folders.push(myObj)
+}
 
 let directoryTree = {
-    folders: [ /* 0 -> folderObject === CARPETA1*/ {
-        name: "carpeta1",
-        folders: [  // CARPETAS DENTRO DE CARPETA1
-    /* 0.folders */        /* 0 -> folderObject === CARPETA1 DENTRO DE CARPETA1*/ {
-                    name: "carpeta1.1",
-                    folders: [],
-                    files: []
-            },
-    /* 0.folders */       /* 1 -> folderObject === CARPETA2 DENTRO DE CARPETA1*/ {
-                    name: "carpeta1.2",
-                    folders: [],
-                    files: [
-                            ]
-            }
-        ],
-        files: [  // ARCHIVOS DENTRO DE CARPETA1
-    /* 0.files */        /* 0 -> fileObject === Archivo1 DENTRO DE CARPETA1*/ {
-                            name: "Archivo1.1",
-                            content: "contenido Archivo1.1"
-                    },
-    /* 0.files */       /* 1 -> folderObject === Archivo2 DENTRO DE CARPETA1*/ {
-                            name: "Archivo1.2",
-                            content: "contenido Archivo1.2"
-                    }
-                ]
-    },
-    /* 1 -> folderObject === CARPETA2*/ {
-        name: "carpeta2",
-        folders: [  // CARPETAS DENTRO DE CARPETA2
-    /* 1.folders */        /* 0 -> folderObject === CARPETA1 DENTRO DE CARPETA2*/ {
-                    name: "carpeta2.1",
-                    folders: [],
-                    files: [
-                            ]
-            },
-        ],
-        files: [  // ARCHIVOS DENTRO DE CARPETA2
-    /* 1.files */        /* 0 -> fileObject === Archivo1 DENTRO DE CARPETA2*/ {
-                            name: "Archivo1.2",
-                            content: "contenido Archivo1.2"
-                    },
-                ]
-    }
-],
-
-/* 1 */ files: [
-/* 0 -> fileObject === File1 del rootActual*/ {
-name: "file1",
-content: "contentFile1"
-},
-/* 1 -> fileObject === File2 del rootActual*/ {
-name: "file2",
-content: "contentFile2"
+    folders : [],
+    files:[]
 }
-]
-};
+
+let myObj ={
+    name : "",
+    time : 0,
+    folders : [],
+    files : []
+}
 
 function echo(commandline) {
     //let directoryTree = JSON.parse(localStorage.getItem("directoryTree"))
@@ -182,7 +139,6 @@ function saveInHistory(){
 
 function checkValidCommand(){
     var stringInWords=document.getElementById(contador).value.split(' ');
-    console.log(stringInWords[0])
     switch(stringInWords[1]){
     case "pwd":
         pwd();
@@ -192,8 +148,16 @@ function checkValidCommand(){
         cd(stringInWords[2]);
         saveInHistory();
         break;
+    case "cd..":
+        cd2();
+        saveInHistory();
+        break;
     case "echo":
         echo(stringInWords);
+        break;
+    case "mkdir":
+        mkdir(stringInWords[2])
+        saveInHistory();
         break;
     default:
         console.log("Invalid command madafaka, try again");
