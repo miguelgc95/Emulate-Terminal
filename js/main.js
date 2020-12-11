@@ -158,38 +158,125 @@ function echo(commandline) {
     }
 }
 
-function ls(option) {
+function lsCommand(dirToList) {
     let listToShow = [];
+    for (let index = 0; index < eval(dirToList).files.length; index++) {
+        listToShow.push(eval(dirToList).files[index].name);
+    }
+    for (let index = 0; index < eval(dirToList).folders.length; index++) {
+        listToShow.push(eval(dirToList).folders[index].name);
+    }
+    newtextArea();
+    document.getElementById(contador).value = listToShow.join(" ");
+}
+
+function ls(option) {
+
     if (option == undefined) {
-        for (let index = 0; index < eval(directoryTree).files.length; index++) {
-            listToShow.push(eval(directoryTree).files[index].name);
-        }
-        for (let index = 0; index < eval(directoryTree).folders.length; index++) {
-            listToShow.push(eval(directoryTree).folders[index].name);
-        }
-        newtextArea();
-        document.getElementById(contador).value += listToShow.join(" ");
+        lsCommand(directoryTree);
     }
 
     /* Option R */
     if (option == "-R") {
-        for (let index = 0; index < eval(directoryTree).files.length; index++) {
-            listToShow.push(eval(directoryTree).files[index].name);
+
+        let saltolinea = `\r\n`;
+        let lastFolderinCurrentDir;
+        let currentPathcopy = currentPath;
+        let directoryTreeCopy = JSON.parse(JSON.stringify(directoryTree));
+        let currentDir = directoryTreeCopy;
+        let folderNumber = 0;
+        let contador= 0;
+
+        lsCommand(directoryTreeCopy);
+        //for (let index = 0; index < eval(directoryTreeCopy).folders.length; index++) {
+            //currentDir = directoryTreeCopy.fo
+        for (let index = 0; index < directoryTreeCopy.folders.length; index++) {
+            if (eval(currentDir).folders.length>0) {
+                currentDir = eval(currentDir).folders[contador];
+                lsCommand (currentDir);
+            } else {
+                contador++;
+                currentDir = directoryTreeCopy;
+            }
         }
-        for (let index = 0; index < eval(directoryTree).folders.length; index++) {
-            listToShow.push(eval(directoryTree).folders[index].name);
-        }
-        newtextArea();
-        document.getElementById(contador).value += listToShow.join(" ");
+        
+        
+            while (eval(currentDir).folders.length>0) {
+                for (let index = 0; index < eval(currentDir).folders.length; index++) {
+                    console.log(eval(currentDir).folders[index]);
+                    currentDir = eval(currentDir).folders[index];
+                    lsCommand (currentDir);
+                }
+                
+                console.log(eval(currentDir).folders.length)
+            }
+        
+        //}
+        
+
+           /*  for (let folderNumber = 0; folderNumber < eval(directoryTreeCopy).folders.length; folderNumber++) {
+                directoryTreeCopy = eval(directoryTreeCopy).folders[folderNumber];
+                currentPathcopy = currentPathcopy + "/" + eval(directoryTreeCopy).folders[folderNumber].name
+                lsCommand (directoryTreeCopy);
+                document.getElementById(contador).value = currentPathcopy + ": " + document.getElementById(contador).value
+                currentPathcopy
+            } */
+
+        
+        /* let listString = listToShow.join(" ");
+        document.getElementById(contador).value = listString;
         let showfoldersR = [];
-        showfoldersR.push(listToShow);
-        for (let index = 0; index < eval(directoryTree).folders.length; index++) {
-            
-            showfoldersR.push(eval(directoryTree).folders[index].files);
-        }
-        /* '\n' */
+        showfoldersR.push(listString);
+        console.log(showfoldersR); */
+
+        /* let directoryTreetoString = JSON.stringify(directoryTree);
+        let directoryTreeCopy = JSON.parse(directoryTreetoString);
+        console.log(directoryTree);
+        console.log(directoryTreeCopy); */
+    //    
+    //    if (eval(currentPathcopy).folders.length>0 && lastFolder == false) {
+    //        
+    //    }
+    //    while (eval(currentPathcopy).folders.length > 0) {
+    //        eval(currentPathcopy).folders.forEach((x,i)=>{
+    //            x.name
+    //            if (x.name === whereToMove) {
+    //                currentPathcopy += `.folders[${i}]`
+    //                console.log(currentPath);
+    //            }
+    //        })
+    //        eval(currentPathcopy).files.forEach((x,i)=>{
+    //            x.name
+    //            if (x.name === whereToMove) {
+    //                currentPathcopy += `.folders[${i}]`
+    //                console.log(currentPath);
+    //    
+    //            }
+    //        })
+    //    }
+    //    
+    //    console.log(currentPathcopy);
+    //    console.log(currentPath);
+    //    
+    //    for (let index = 0; index < eval(directoryTree).folders.length; index++) {
+    //        let currentfolder = [];
+    //        currentPathcopy+= `.folders[`+ index +`]`;
+    //        console.log(currentPathcopy);
+    //        currentfolder.push(eval(directoryTree).folders[index].name.toString());
+    //        document.getElementById(contador).value += "" + saltolinea + "" +eval(directoryTree).folders[index].name.toString();
+    //        /* console.log(eval(directoryTree).folders[index].name) */
+    //        for (let j = 0; j < eval(directoryTree).folders[index].files.length; j++) {
+    //            document.getElementById(contador).value += "" + saltolinea + "" + eval(directoryTree).folders[index].files[j].name;
+    //            let listFilesInFolder = []
+    //            listFilesInFolder.push(eval(directoryTree).folders[index].files[j].name);
+    //            let listFilesInFolderString = listFilesInFolder.join("\n");
+    //            currentfolder.push(listFilesInFolderString);
+    //        }
+    //        console.log(currentfolder);
+    //    }
+    //    
     }
-}
+}//
 
 function rm(string){
     console.log(string);
