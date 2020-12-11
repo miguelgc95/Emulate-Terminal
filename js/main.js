@@ -2,16 +2,7 @@
 localStorage.setItem("commands",JSON.stringify(["pwd", "ls", "cd", "cd..", "mkdir", "echo", "cat", "rm", "mv", "clear"]));
 localStorage.setItem("history",JSON.stringify([]));
 
-<<<<<<< HEAD
 var path="/root";//a dinamic string where to store the currett work folder
-=======
-
-
-
-
-
-var path="Root";//a dinamic string where to store the currett work folder
->>>>>>> master
 let currentPath = 'directoryTree';
 
 let directoryTree = {
@@ -56,17 +47,7 @@ function checkValidCommand(){
         saveInHistory();
         break;
     case "cd":
-        if (stringInWords[2]===undefined){
-            console.log("Invalid command madafaka, try again");
-        }
-        else{
-            cd(stringInWords[2]);
-            saveInHistory();
-        }
-        break;
-    case "cd..":
-        cd2();
-        saveInHistory();
+        cd(stringInWords);
         break;
     case "echo":
         echo(stringInWords);
@@ -80,42 +61,43 @@ function checkValidCommand(){
     case "rm":
         rm(stringInWords)
         saveInHistory();
-        
         break;
     default:
         console.log("Invalid command madafaka, try again");
-        //document.getElementById(contador).value="";
-    }   
+    }
+
+
 //commands functions
 function pwd() {
     alert("You are in "+path);
 }
 
-function cd(whereToMove){
-<<<<<<< HEAD
-    console.log("entro a cd")
-    var flag=true;
-    eval(currentPath).folders.forEach((x,i)=>{
-        if (x.name === whereToMove) {
-            currentPath += `.folders[${i}]`;
-            path+=('/'+whereToMove)
-            flag=false;
-        }
-    })
-    if (flag){
-        console.log("esa carpeta no existe")
-    }
-=======
-    path+=('/'+whereToMove)
-    eval(currentPath).folders.forEach((x,i)=>{
-        if (x.name === whereToMove) {
-            currentPath += `.folders[${i}]`
-            console.log(currentPath);
 
-        }
-    })
-    path+=("/"+whereToMove)
->>>>>>> master
+function cd(stringInWords){
+    if(stringInWords.length===2){
+        emptyCD();
+        saveInHistory();
+    }
+    else if(stringInWords[2]===".."){
+        cd2();
+        saveInHistory();
+    }
+    else if(stringInWords[2][0]!="/"){
+        relativeCD(stringInWords[2]);
+        saveInHistory();
+    }
+    else if(stringInWords[2][0]==="/"){
+        absoluteCD(stringInWords[2]);
+        saveInHistory();
+    }
+    else{
+        console.log("invalid command")
+    }
+}
+
+function emptyCD(){
+    path="/root";
+    currentPath = 'directoryTree';
 }
 
 function cd2() {
@@ -131,9 +113,54 @@ function cd2() {
     currentPath=currentPath.slice(0,currentPath.length-11);
 }
 
+function relativeCD(whereToMove){
+    var flag=true;
+    eval(currentPath).folders.forEach((x,i)=>{
+        if (x.name === whereToMove) {
+            currentPath += `.folders[${i}]`;
+            path+=('/'+whereToMove)
+            flag=false;
+        }
+    })
+    if (flag){
+        console.log("esa carpeta no existe")
+    }
+}
+
+function absoluteCD(whereToMove){
+    var whereToMoveInWords=whereToMove.split("/");
+    whereToMoveInWords.shift();
+    whereToMoveInWords.shift();
+    whereToMoveInWords.unshift("root");
+    var pathAux="";
+    var currentPathAux="directoryTree";
+    var metaFlag=false;
+    for(i=0;i<whereToMoveInWords.length-1;i++){
+        var flag=true;
+        for(j=0;j<eval(currentPathAux).folders.length;j++){
+            if(eval(currentPathAux).folders[j].name===whereToMoveInWords[i+1]){
+                flag=false;
+                pathAux+="/"+whereToMoveInWords[i];
+                currentPathAux+=`.folders[${j}]`;
+                break;
+            }
+        }
+        if(flag){
+            console.log("The path doesn't exist");
+            break;
+        }
+        else{
+            metaFlag=true;
+        }
+    }
+    if(metaFlag){
+        path=`${pathAux}/${whereToMoveInWords[whereToMoveInWords.length-1]}`;
+        currentPath=currentPathAux;
+    }
+}
+
 function mkdir(name){
     let time = new Date().getTime()
-    // console.log(time);
     let myObj ={
         name : name,
         time : time,
@@ -199,18 +226,18 @@ function ls(option) {
     newtextArea();
         }
     }
-} function rm(string){
+}
+
+function rm(string){
     console.log(string);
     switch(string[2]){
-        case '-r': 
+        case '-r':
             console.log('estas en -r');
             break
-        case '-d': 
+        case '-d':
             console.log('estas en -d');
             break
         default:
             console.log('estas en default');
-
-
     }
 }
