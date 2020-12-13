@@ -2,7 +2,6 @@
 localStorage.setItem("commands",JSON.stringify(["pwd", "ls", "cd", "cd..", "mkdir", "echo", "cat", "rm", "mv", "clear"]));
 localStorage.setItem("history",JSON.stringify([]));
 
-var path="/root";//a dinamic string where to store the currett work folder
 let currentPath = 'directoryTree';
 
 let directoryTree = {
@@ -42,8 +41,8 @@ function checkValidCommand(){
     var stringInWords=document.getElementById(contador).value.split(' ');
     switch(stringInWords[1]){
     case "pwd":
-        pwd();
         saveInHistory();
+        pwd();
         break;
     case "cd":
         cd(stringInWords);
@@ -53,17 +52,17 @@ function checkValidCommand(){
         setLocalStorage()
         break;
     case "mkdir":
-        mkdir(stringInWords[2])
         saveInHistory();
+        mkdir(stringInWords[2])
         setLocalStorage()
         break;
     case "rm":
-        rm(stringInWords)
         saveInHistory();
+        rm(stringInWords)
         break;
     case "cat":
-        cat(stringInWords[2]);
         saveInHistory();
+        cat(stringInWords[2]);
         break;
     default:
         newtextArea();
@@ -78,21 +77,18 @@ function pwd() {
 }
 
 function cd(stringInWords){
+    saveInHistory();
     if(stringInWords.length===2){
         emptyCD();
-        saveInHistory();
     }
     else if(stringInWords[2]===".."){
         cd2();
-        saveInHistory();
     }
     else if(stringInWords[2][0]!="/"){
         relativeCD(stringInWords[2]);
-        saveInHistory();
     }
     else if(stringInWords[2][0]==="/"){
         absoluteCD(stringInWords[2]);
-        saveInHistory();
     }
     else{
         console.log("invalid command")
@@ -127,7 +123,8 @@ function relativeCD(whereToMove){
         }
     })
     if (flag){
-        console.log("esa carpeta no existe")
+        newtextArea();
+        document.getElementById(contador).value="folder doesn't exist";
     }
 }
 
@@ -150,7 +147,8 @@ function absoluteCD(whereToMove){
             }
         }
         if(flag){
-            console.log("The path doesn't exist");
+            newtextArea();
+            document.getElementById(contador).value="The path doesn't exist";
             break;
         }
         else{
