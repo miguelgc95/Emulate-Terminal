@@ -36,7 +36,6 @@ function saveInHistory(){
     var historyArray = JSON.parse(localStorage.getItem("history"));
     historyArray.push(document.getElementById(contador).value);
     localStorage.setItem("history",JSON.stringify(historyArray));
-    //document.getElementById(contador).value="";
 }
 
 function checkValidCommand(){
@@ -62,16 +61,21 @@ function checkValidCommand(){
         rm(stringInWords)
         saveInHistory();
         break;
+    case "cat":
+        cat(stringInWords[2]);
+        saveInHistory();
+        break;
     default:
-        console.log("Invalid command madafaka, try again");
+        newtextArea();
+        document.getElementById(contador).value="Invalid command madafaka, try again";
     }
 
 
 //commands functions
 function pwd() {
-    alert("You are in "+path);
+    newtextArea();
+    document.getElementById(contador).value="You are in: "+path;
 }
-
 
 function cd(stringInWords){
     if(stringInWords.length===2){
@@ -159,6 +163,21 @@ function absoluteCD(whereToMove){
     }
 }
 
+function cat(fileToOpen){
+    var flag=true;
+    eval(currentPath).files.forEach(element => {
+        if (element.name===fileToOpen){
+            newtextArea();
+            document.getElementById(contador).value=element.content;
+            flag=false
+        }
+    });
+    if(flag){
+        newtextArea();
+        document.getElementById(contador).value="file doesn't exist";
+    }
+}
+
 function mkdir(name){
     let time = new Date().getTime()
     let myObj ={
@@ -169,7 +188,6 @@ function mkdir(name){
     }
     eval(currentPath).folders.push(myObj);
 }
-
 
 function echo(commandline) {
 
