@@ -21,10 +21,10 @@ getLocalStorage()
 function getLocalStorage(){
     if (localStorage.getItem('root') === null) {
         localStorage.setItem('root',JSON.stringify(directoryTree))
-        console.log('lo creo');
+        
     }else{
         directoryTree = JSON.parse(localStorage.getItem('root'))
-        console.log('lo cojo');
+      
     }
 }
 function setLocalStorage(){
@@ -34,7 +34,6 @@ function setLocalStorage(){
 function saveInHistory(){
     var historyArray = JSON.parse(localStorage.getItem("history"));
     var newCommandToSave = document.getElementById(contador).value.slice(path.length+4);
-    console.log(newCommandToSave, path.length);
     historyArray.push(newCommandToSave);
     localStorage.setItem("history",JSON.stringify(historyArray));
 }
@@ -62,6 +61,7 @@ function checkValidCommand(){
         case "rm":
             saveInHistory();
             rm(stringInWords)
+            setLocalStorage()
             break;
         case "cat":
             saveInHistory();
@@ -577,6 +577,68 @@ function clear(){
     $textAreas.forEach(e => {
             e.remove()
     });
+
+
+}
+function getAbsolutePath(){
+
+}
+function rm(string){
+    let path = ''
+    let routeDel = string[3]
+
+    if (routeDel.includes('/')) {
+        //reuta absoluta
+    }else{
+        //ruta relativa
+        switch (string[2]) {
+            case '-r':
+                currentPath += '.folders'
+                let x = false
+                eval(currentPath).forEach((e,i) => {
+                    if (e.name === routeDel) {
+                        eval(currentPath).splice(i,i+1)
+                        x = true
+                    }
+                });    
+                if (!x) {
+                    newtextArea()
+                    document.getElementById(contador).value="This folder doesn't exist"
+                }
+                break;
+            case '-R':
+                currentPath += '.folders'
+                
+                eval(currentPath).forEach((e,i) => {
+                    if (e.name === routeDel) {
+                        eval(currentPath).splice(i,i+1)
+                    }
+                });    
+                break;
+            case '-d':
+                if (eval(currentPath).folders.length>0 || eval(currentPath).files.length>0) {
+                    newtextArea()
+                    document.getElementById(contador).value='This is not an empty directory'
+                }else{
+                    currentPath += '.folders'
+                    console.log(currentPath);
+                    console.log(routeDel);
+                    eval(currentPath).forEach((e,i) => {
+                        if (e.name === routeDel) {
+                            eval(currentPath).splice(i,i+1)
+                        }
+                    });       
+                }
+                break;
+            
+            default:
+                newtextArea()
+                document.getElementById(contador).value="The extension of this command doesn't exist"
+                break;
+        }
+
+    }
+
 
 
 }
