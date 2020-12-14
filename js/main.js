@@ -600,11 +600,11 @@ function rm(string){
                         eval(currentPath).splice(i,i+1)
                         x = true
                     }
+                    if (!x) {
+                        newtextArea()
+                        document.getElementById(contador).value="This folder doesn't exist"
+                    }
                 });    
-                if (!x) {
-                    newtextArea()
-                    document.getElementById(contador).value="This folder doesn't exist"
-                }
                 break;
             case '-R':
                 currentPath += '.folders'
