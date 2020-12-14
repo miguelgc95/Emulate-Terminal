@@ -33,7 +33,9 @@ function setLocalStorage(){
 
 function saveInHistory(){
     var historyArray = JSON.parse(localStorage.getItem("history"));
-    historyArray.push(document.getElementById(contador).value);
+    var newCommandToSave = document.getElementById(contador).value.slice(path.length+4);
+    console.log(newCommandToSave, path.length);
+    historyArray.push(newCommandToSave);
     localStorage.setItem("history",JSON.stringify(historyArray));
 }
 
@@ -69,14 +71,12 @@ function checkValidCommand(){
         saveInHistory();
         break;
     default:
-
         console.log("Invalid command madafaka, try again");
         //document.getElementById(contador).value="";
-    }
-}
         newtextArea();
         document.getElementById(contador).value="Invalid command madafaka, try again";
     }
+}
 
 //commands functions
 function pwd() {
@@ -248,7 +248,6 @@ function lsCommand(dirToList) {
 }
 
 function ls(option) {
-
     if (option == undefined) {
         lsCommand(currentPath);
     }
@@ -266,51 +265,48 @@ function ls(option) {
         let goto_variable = "goinginfolders";
         let var_continue = true;
 
-        while (currentPathcopy.length >= currentPath.length && var_continue== true) //
-{
-    switch (goto_variable)
-    {
-        case "goinginfolders": 
-            while (eval(currentPathcopy).folders.length > 0) { // si hay carpetas me meto en la primera y hago ls
-                    currentPathcopy += `.folders[0]`;
-                    console.log(currentPathcopy);
+        while (currentPathcopy.length >= currentPath.length && var_continue== true){
+            switch (goto_variable)
+            {
+                case "goinginfolders":
+                    while (eval(currentPathcopy).folders.length > 0) { // si hay carpetas me meto en la primera y hago ls
+                            currentPathcopy += `.folders[0]`;
+                            console.log(currentPathcopy);
 
-                    lsCommand(currentPathcopy);
-                    document.getElementById(contador).value = " " + eval(currentPathcopy).name + ": " + document.getElementById(contador).value
-            }
-            if (eval(currentPathcopy).folders.length == 0) { //cuando no haya carpeta
-                //entro en una carpeta que no hay carpetas 111
-                console.log(eval(currentPathcopy).name);
-                goto_variable = "readPositionFolder";
-            }
-            break;
+                            lsCommand(currentPathcopy);
+                            document.getElementById(contador).value = " " + eval(currentPathcopy).name + ": " + document.getElementById(contador).value
+                    }
+                    if (eval(currentPathcopy).folders.length == 0) { //cuando no haya carpeta
+                        //entro en una carpeta que no hay carpetas 111
+                        console.log(eval(currentPathcopy).name);
+                        goto_variable = "readPositionFolder";
+                    }
+                    break;
 
-        case "readPositionFolder":
-            let lastfolderposition = currentPathcopy.charAt(currentPathcopy.length - 2);
-            let nextfolderposition = parseInt(lastfolderposition) + 1;
-            console.log(eval(currentPathcopy).name);
-            currentPathcopy = currentPathcopy.slice(0, -11); //voy al nivel superior
-            console.log(eval(currentPathcopy).name);
-            if (nextfolderposition < eval(currentPathcopy).folders.length) {  //si el numero de carpetas de ese nivel es mayor a la posicion de la ultima
-                currentPathcopy += `.folders[`+ nextfolderposition +`]`;
-                    console.log(currentPathcopy)
-                    lsCommand(currentPathcopy);
-                    document.getElementById(contador).value = " " + eval(currentPathcopy).name + ": " + document.getElementById(contador).value
-                    goto_variable = "goinginfolders";
-            } else if (currentPathcopy.length > currentPath.length) {
-                console.log(currentPathcopy.length);
-                console.log(currentPath.length);
-                console.log(eval(currentPathcopy).name);
-                console.log(eval(currentPath).name);
-                goto_variable = "readPositionFolder";
-            } else {
-                var_continue = false;
-                break;
+                case "readPositionFolder":
+                    let lastfolderposition = currentPathcopy.charAt(currentPathcopy.length - 2);
+                    let nextfolderposition = parseInt(lastfolderposition) + 1;
+                    console.log(eval(currentPathcopy).name);
+                    currentPathcopy = currentPathcopy.slice(0, -11); //voy al nivel superior
+                    console.log(eval(currentPathcopy).name);
+                    if (nextfolderposition < eval(currentPathcopy).folders.length) {  //si el numero de carpetas de ese nivel es mayor a la posicion de la ultima
+                        currentPathcopy += `.folders[`+ nextfolderposition +`]`;
+                            console.log(currentPathcopy)
+                            lsCommand(currentPathcopy);
+                            document.getElementById(contador).value = " " + eval(currentPathcopy).name + ": " + document.getElementById(contador).value
+                            goto_variable = "goinginfolders";
+                    } else if (currentPathcopy.length > currentPath.length) {
+                        console.log(currentPathcopy.length);
+                        console.log(currentPath.length);
+                        console.log(eval(currentPathcopy).name);
+                        console.log(eval(currentPath).name);
+                        goto_variable = "readPositionFolder";
+                    } else {
+                        var_continue = false;
+                        break;
+                    }
             }
-            
-
-    }
-}
+        }
     }
 }
 
