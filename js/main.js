@@ -1,8 +1,10 @@
 //data manage
 localStorage.setItem("commands",JSON.stringify(["pwd", "ls", "cd", "cd..", "mkdir", "echo", "cat", "rm", "mv", "clear"]));
-localStorage.setItem("history",JSON.stringify([]));
+
 
 let currentPath = 'directoryTree';
+
+let history = []
 
 let directoryTree = {
     folders : [],
@@ -26,16 +28,28 @@ function getLocalStorage(){
         directoryTree = JSON.parse(localStorage.getItem('root'))
       
     }
+    if (localStorage.getItem('history') === null) {
+        localStorage.setItem('history',JSON.stringify(history))
+        
+    }else{
+    
+        history = JSON.parse(localStorage.getItem('history'))
+      
+    }
 }
 function setLocalStorage(){
     localStorage.setItem('root',JSON.stringify(directoryTree))
+    localStorage.setItem('history',JSON.stringify(history))
+
 }
 
 function saveInHistory(){
-    var historyArray = JSON.parse(localStorage.getItem("history"));
+    // var historyArray = JSON.parse(localStorage.getItem("history"));
     var newCommandToSave = document.getElementById(contador).value.slice(path.length+4);
-    historyArray.push(newCommandToSave);
-    localStorage.setItem("history",JSON.stringify(historyArray));
+    history.push(newCommandToSave);
+    // localStorage.setItem("history",JSON.stringify(historyArray));
+    setLocalStorage()
+
 }
 
 function checkValidCommand(){
