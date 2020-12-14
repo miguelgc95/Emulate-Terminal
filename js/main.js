@@ -66,11 +66,19 @@ function checkValidCommand(){
         saveInHistory();
         cat(stringInWords[2]);
         break;
+    case "ls":
+        ls(stringInWords[2])
+        saveInHistory();
+        break;
     default:
+
+        console.log("Invalid command madafaka, try again");
+        //document.getElementById(contador).value="";
+    }
+}
         newtextArea();
         document.getElementById(contador).value="Invalid command madafaka, try again";
     }
-
 
 //commands functions
 function pwd() {
@@ -228,21 +236,83 @@ function echo(commandline) {
     }
 }
 
-function ls(option) {
-    //localStorage.getItem("directoryTree");
+function lsCommand(dirToList) {
+    console.log(dirToList)
     let listToShow = [];
-    for (let index = 0; index < directoryTree.files.length; index++) {
-        listToShow.push(directoryTree.files[index].name);
+    for (let index = 0; index < eval(dirToList).files.length; index++) {
+        listToShow.push(eval(dirToList).files[index].name);
     }
-    for (let index = 0; index < directoryTree.folder.length; index++) {
-        listToShow.push(directoryTree.folder[index].name);
+    for (let index = 0; index < eval(dirToList).folders.length; index++) {
+        listToShow.push(eval(dirToList).folders[index].name);
     }
-    document.getElementById(contador).innerHTML = listToShow.join(" ");
+        newtextArea();
+        document.getElementById(contador).value = listToShow.join(" ");
+}
+
+function ls(option) {
+
+    if (option == undefined) {
+        lsCommand(currentPath);
+    }
 
     /* Option R */
     if (option == "-R") {
-    newtextArea();
-        }
+        let currentPathcopy = currentPath; //copio la ruta desde donde se ha llamado a la funcion
+        let directoryTreeCopy = eval(currentPathcopy);
+
+        console.log(currentPathcopy);
+        console.log(directoryTreeCopy);
+
+        lsCommand(currentPathcopy); // listo la ruta -> imprimo carpetas y archivos que haya en el directorio actual
+
+        let goto_variable = "goinginfolders";
+        let var_continue = true;
+
+        while (currentPathcopy.length >= currentPath.length && var_continue== true) //
+{
+    switch (goto_variable)
+    {
+        case "goinginfolders": 
+            while (eval(currentPathcopy).folders.length > 0) { // si hay carpetas me meto en la primera y hago ls
+                    currentPathcopy += `.folders[0]`;
+                    console.log(currentPathcopy);
+
+                    lsCommand(currentPathcopy);
+                    document.getElementById(contador).value = " " + eval(currentPathcopy).name + ": " + document.getElementById(contador).value
+            }
+            if (eval(currentPathcopy).folders.length == 0) { //cuando no haya carpeta
+                //entro en una carpeta que no hay carpetas 111
+                console.log(eval(currentPathcopy).name);
+                goto_variable = "readPositionFolder";
+            }
+            break;
+
+        case "readPositionFolder":
+            let lastfolderposition = currentPathcopy.charAt(currentPathcopy.length - 2);
+            let nextfolderposition = parseInt(lastfolderposition) + 1;
+            console.log(eval(currentPathcopy).name);
+            currentPathcopy = currentPathcopy.slice(0, -11); //voy al nivel superior
+            console.log(eval(currentPathcopy).name);
+            if (nextfolderposition < eval(currentPathcopy).folders.length) {  //si el numero de carpetas de ese nivel es mayor a la posicion de la ultima
+                currentPathcopy += `.folders[`+ nextfolderposition +`]`;
+                    console.log(currentPathcopy)
+                    lsCommand(currentPathcopy);
+                    document.getElementById(contador).value = " " + eval(currentPathcopy).name + ": " + document.getElementById(contador).value
+                    goto_variable = "goinginfolders";
+            } else if (currentPathcopy.length > currentPath.length) {
+                console.log(currentPathcopy.length);
+                console.log(currentPath.length);
+                console.log(eval(currentPathcopy).name);
+                console.log(eval(currentPath).name);
+                goto_variable = "readPositionFolder";
+            } else {
+                var_continue = false;
+                break;
+            }
+            
+
+    }
+}
     }
 }
 
