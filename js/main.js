@@ -76,6 +76,10 @@ function checkValidCommand(){
         ls(stringInWords[2])
         saveInHistory();
         break;
+    case "man":
+        man(stringInWords[2])
+        saveInHistory();
+        break;
     default:
         console.log("Invalid command madafaka, try again");
         //document.getElementById(contador).value="";
@@ -437,6 +441,17 @@ currentPath = currentPathcopy;
 //directoryTree = eval(currentPathcopy);
 }
 
+function man (command) {
+    document.getElementById("textsArea-container").style.display = "none";
+    document.getElementById(command).style.display = "block";
+    
+    window.onkeypress = function(e) {
+        if (e.keyCode == 113) {
+            document.getElementById("textsArea-container").style.display = "flex";
+            document.getElementById(command).style.display = "none";
+        }
+    };
+}
             
 function rm(string){
     console.log(string);
