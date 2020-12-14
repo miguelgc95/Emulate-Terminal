@@ -257,3 +257,9 @@ function rm(string){
             console.log('estas en default');
     }
 }
+
+// Command Clear
+
+let clear = document.querySelectorAll('textarea');
+
+console.log(clear);
