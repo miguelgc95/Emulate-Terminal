@@ -354,9 +354,33 @@ function ls(option) {
     /* OPCION t */
     if (option == "-t") {
         let itemsToSort = [];
-          
-        let listToSort = lsCommand(currentPath);
-        console.log(listToSort);
+        let nameSortsbyTime = [];
+        
+        for (let index = 0; index < eval(currentPath).folders.length; index++) {
+            itemsToSort.push(eval(currentPath).folders[index]);
+        }
+        for (let index = 0; index < eval(currentPath).files.length; index++) {
+            itemsToSort.push(eval(currentPath).files[index]);
+        }
+        console.log(itemsToSort);
+
+        itemsToSort.sort(function (a, b) {
+            if (a.time < b.time) {
+              return 1;
+            }
+            if (a.time > b.time) {
+              return -1;
+            }
+            // a must be equal to b
+            return 0;
+          });
+
+          itemsToSort.forEach(element => {
+            nameSortsbyTime.push(element.name);
+          });
+          newtextArea();
+        document.getElementById(contador).value = nameSortsbyTime.join(" ");
+
     }
 }
 
