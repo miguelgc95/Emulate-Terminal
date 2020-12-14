@@ -580,15 +580,54 @@ function clear(){
 
 
 }
-function getAbsolutePath(){
-
+function getAbsolutePath(str){
+    console.log(str);
+    let absPath = 'directoryTree.folders'
+    let index = 0
+    
+    strSplit = str.split('/')
+    
+    strSplit.forEach((e,i) => {
+        eval(absPath).forEach((el,ind) => {
+            if (e === el.name) {
+                if (i < strSplit.length-1) {
+                    absPath += `[${ind}].folders`       
+                }
+                index = ind
+            }
+        });
+    });
+    let ret = [absPath,index]
+    return ret
 }
 function rm(string){
-    let path = ''
+    
     let routeDel = string[3]
 
     if (routeDel.includes('/')) {
         //reuta absoluta
+        let info = getAbsolutePath(routeDel)
+        console.log(info);
+        switch (string[2]) {
+            case '-r':
+                eval(info[0]).splice(info[1],info[1]+1)
+
+                break;
+            case '-R':
+                eval(info[0]).splice(info[1],info[1]+1)
+
+                break;
+            case '-d':               
+                    eval(info[0]).splice(info[1],info[1]+1)
+     
+                break;
+                
+            default:
+                newtextArea()
+                document.getElementById(contador).value="The extension of this command doesn't exist"
+                break;
+        }
+
     }else{
         //ruta relativa
         switch (string[2]) {
