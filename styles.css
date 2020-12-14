@@ -42,6 +42,10 @@ table {
 	border-spacing: 0;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 /* css text area */
 textarea {
     border: none;
@@ -50,8 +54,9 @@ textarea {
     border-color: Transparent;
     outline: none;
     resize: none;
+    width: 700px;
     background-color: rgb(19, 19, 19);
-    color: blanchedalmond;
+    color: aliceblue;
 }
 
 textarea:focus {
@@ -64,12 +69,54 @@ textarea:focus {
 }
 
 /* Position */
-section {
+section:first-child {
     width: max-content;
     height: 500px;
     margin: 0 auto;
-    background-color: rgb(19, 19, 19);;
+    background-color: rgb(19, 19, 19);
     display: flex;
     flex-direction: column;
     /* justify-content: flex-end; */
+}
+
+
+/* man command */
+section {
+    display: none;
+    width: 700px;
+    min-height: 500px;
+    height: max-content;
+    margin: 0 auto;
+    background-color: rgb(19, 19, 19);
+    color: aliceblue;
+    font: 400 13.3333px Arial;
+    font-style: normal;
+    font-variant-ligatures: normal;
+    font-variant-caps: normal;
+    font-variant-numeric: normal;
+    font-variant-east-asian: normal;
+    font-weight: 400;
+    font-stretch: normal;
+    font-size: 13.3333px;
+    line-height: normal;
+    font-family: monospace;
+    padding: 0 5px;
+}
+h2:first-child{
+    margin-top: 0;
+}
+h2 {
+    font-size: 17px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+p {
+    margin-top: 2px;
+}
+
+.information{
+    background-color: rgb(115, 115, 255);
+    color: rgb(255, 255, 111);
+    padding: 2px;
+    width: max-content;
 }
