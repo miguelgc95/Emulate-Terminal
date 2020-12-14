@@ -64,6 +64,10 @@ function checkValidCommand(){
         saveInHistory();
         cat(stringInWords[2]);
         break;
+    case "clear":
+        saveInHistory()
+        clear();
+        break;
     default:
         newtextArea();
         document.getElementById(contador).value="Invalid command madafaka, try again";
@@ -260,6 +264,13 @@ function rm(string){
 
 // Command Clear
 
-let clear = document.querySelectorAll('textarea');
+function clear(){
+    let $textAreas = document.querySelectorAll('textarea')
 
-console.log(clear);
+    $textAreas.forEach(e => {
+            e.remove()
+    });
+
+
+}
+
