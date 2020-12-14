@@ -42,39 +42,42 @@ function saveInHistory(){
 function checkValidCommand(){
     var stringInWords=document.getElementById(contador).value.split(' ');
     switch(stringInWords[1]){
-    case "pwd":
-        saveInHistory();
-        pwd();
-        break;
-    case "cd":
-        cd(stringInWords);
-        break;
-    case "echo":
-        echo(stringInWords);
-        setLocalStorage()
-        break;
-    case "mkdir":
-        saveInHistory();
-        mkdir(stringInWords[2])
-        setLocalStorage()
-        break;
-    case "rm":
-        saveInHistory();
-        rm(stringInWords)
-        break;
-    case "cat":
-        saveInHistory();
-        cat(stringInWords[2]);
-        break;
-    case "ls":
-        ls(stringInWords[2])
-        saveInHistory();
-        break;
-    default:
-        console.log("Invalid command madafaka, try again");
-        //document.getElementById(contador).value="";
-        newtextArea();
-        document.getElementById(contador).value="Invalid command madafaka, try again";
+        case "pwd":
+            saveInHistory();
+            pwd();
+            break;
+        case "cd":
+            cd(stringInWords);
+            break;
+        case "echo":
+            saveInHistory();
+            echo(stringInWords);
+            setLocalStorage()
+            break;
+        case "mkdir":
+            saveInHistory();
+            mkdir(stringInWords[2])
+            setLocalStorage()
+            break;
+        case "rm":
+            saveInHistory();
+            rm(stringInWords)
+            break;
+        case "cat":
+            saveInHistory();
+            cat(stringInWords[2]);
+            break;
+        case "ls":
+            saveInHistory();
+            ls(stringInWords[2])
+            break;
+        case "help":
+            saveInHistory();
+            help(stringInWords);
+            break;
+        default:
+            newtextArea();
+            document.getElementById(contador).value="Invalid command madafaka, try again";
     }
 }
 
@@ -266,13 +269,11 @@ function ls(option) {
         let var_continue = true;
 
         while (currentPathcopy.length >= currentPath.length && var_continue== true){
-            switch (goto_variable)
-            {
+            switch (goto_variable){
                 case "goinginfolders":
                     while (eval(currentPathcopy).folders.length > 0) { // si hay carpetas me meto en la primera y hago ls
                             currentPathcopy += `.folders[0]`;
                             console.log(currentPathcopy);
-
                             lsCommand(currentPathcopy);
                             document.getElementById(contador).value = " " + eval(currentPathcopy).name + ": " + document.getElementById(contador).value
                     }
@@ -291,10 +292,10 @@ function ls(option) {
                     console.log(eval(currentPathcopy).name);
                     if (nextfolderposition < eval(currentPathcopy).folders.length) {  //si el numero de carpetas de ese nivel es mayor a la posicion de la ultima
                         currentPathcopy += `.folders[`+ nextfolderposition +`]`;
-                            console.log(currentPathcopy)
-                            lsCommand(currentPathcopy);
-                            document.getElementById(contador).value = " " + eval(currentPathcopy).name + ": " + document.getElementById(contador).value
-                            goto_variable = "goinginfolders";
+                        console.log(currentPathcopy)
+                        lsCommand(currentPathcopy);
+                        document.getElementById(contador).value = " " + eval(currentPathcopy).name + ": " + document.getElementById(contador).value
+                        goto_variable = "goinginfolders";
                     } else if (currentPathcopy.length > currentPath.length) {
                         console.log(currentPathcopy.length);
                         console.log(currentPath.length);
@@ -321,5 +322,110 @@ function rm(string){
             break
         default:
             console.log('estas en default');
+    }
+}
+
+function help(stingInWords){
+    console.log(stingInWords);
+    if(stingInWords.length>3){
+        newtextArea();
+        document.getElementById(contador).value="Invalid command madafaka, try again";
+    }
+    else if(stingInWords.length===3){
+        specificHelp(stingInWords[2])
+    }
+    else if(stingInWords.length===2){
+        newtextArea();
+        var helpText=" Browser terminal develop with assembler.";
+        document.getElementById(contador).value=helpText;
+        newtextArea( );
+        helpText=" These shell commands are simulation of interacting with a SO terminal.";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText=" Type 'help name' to find out more about the command 'name'.";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText=" Use 'man' to more detailed explanarion.";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText=" List of avaliable commands:";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  cd [] [..] [relativepath] [absolutepath]";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  echo []";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  pwd []";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  ls []";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  mkdir []";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  cat []";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  rm []";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  mv []";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  clear []";
+        document.getElementById(contador).value=helpText;
+    }
+    else{
+        alert("bug")
+    }
+}
+
+function specificHelp(commandToHelp) {
+    console.log(commandToHelp);
+    switch(commandToHelp){
+        case "pwd":
+            newtextArea();
+            var helpText="  fot a detailed information type 'man pwd'";
+            document.getElementById(contador).value=helpText;
+            break;
+        case "cd":
+            newtextArea();
+            helpText="  fot a detailed information type 'man cd'";
+            document.getElementById(contador).value=helpText;
+            break;
+        case "echo":
+            newtextArea();
+            helpText="  fot a detailed information type 'man echo'";
+            document.getElementById(contador).value=helpText;
+            break;
+        case "mkdir":
+            newtextArea();
+            helpText="  fot a detailed information type 'man mkdir'";
+            document.getElementById(contador).value=helpText;
+            break;
+        case "rm":
+            newtextArea();
+            helpText="  fot a detailed information type 'man rm'";
+            document.getElementById(contador).value=helpText;
+            break;
+        case "cat":
+            newtextArea();
+            helpText="  fot a detailed information type 'man cat'";
+            document.getElementById(contador).value=helpText;
+            break;
+        case "ls":
+            newtextArea();
+            helpText="  fot a detailed information type 'man ls'";
+            document.getElementById(contador).value=helpText;
+            break;
+        default:
+            newtextArea();
+            document.getElementById(contador).value="Invalid command, please try again";
     }
 }
