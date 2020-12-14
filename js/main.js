@@ -72,15 +72,12 @@ function checkValidCommand(){
         saveInHistory();
         cat(stringInWords[2]);
         break;
-<<<<<<< HEAD
     case "clear":
         saveInHistory()
         clear();
-=======
     case "ls":
         ls(stringInWords[2])
         saveInHistory();
->>>>>>> e3266b2180f1c81018d811ef8e3843e88d2ce6d9
         break;
     default:
         console.log("Invalid command madafaka, try again");
@@ -457,7 +454,6 @@ function rm(string){
             console.log('estas en default');
     }
 }
-<<<<<<< HEAD
 
 // Command Clear
 
@@ -471,5 +467,3 @@ function clear(){
 
 }
 
-=======
->>>>>>> e3266b2180f1c81018d811ef8e3843e88d2ce6d9
