@@ -80,6 +80,10 @@ function checkValidCommand(){
         man(stringInWords[2])
         saveInHistory();
         break;
+    case "JS":
+        JSCommand(stringInWords[2])
+        saveInHistory();
+        break;
     default:
         console.log("Invalid command madafaka, try again");
         //document.getElementById(contador).value="";
@@ -465,4 +469,72 @@ function rm(string){
         default:
             console.log('estas en default');
     }
+}
+
+function JSCommand(jsDocumentName) {
+    let myHTML = document.getElementById("body").innerHTML;
+    searchFile(jsDocumentName);
+    let myJScode = searchFile(jsDocumentName);
+    alert (myJScode)
+    let myErrorControl = `<script>
+    try {
+      ` + eval(myJScode) + `
+    }
+    catch(err) {
+        newtextArea();
+        document.getElementById(contador).value= err.mensage;
+    }
+    </script>`;
+
+    document.getElementById("body").innerHTML = myHTML + myErrorControl;
+}
+
+function searchFile(jsDocumentName) {
+    alert(jsDocumentName)
+    let pathSearch = 'directoryTree';
+    let finded = false;
+    let startposition = 0;
+    let folderposition = startposition;
+    let mycodetorun = "";
+    let key = "compareFiles";
+    while (finded === false) {
+        switch (key) {
+            case "compareFiles":
+                alert("entra caso1")
+                eval(pathSearch).files.forEach(element => {
+                    alert(element.name)
+                    if (element.name == jsDocumentName) {
+                        alert("encontrado");
+                        alert(element.content);
+                        finded = true;
+                        mycodetorun = element.content;
+                    }
+                });
+                if (finded === false) {
+                    if (folderposition < eval(pathSearch).folders.length - 1) {
+                        key = "nextFolder";
+                    } else {
+                        key = "changeFolder";
+                    }
+                }
+
+                break;
+        
+            case "changeFolder":
+                pathSearch.slice(0, -11);
+                pathSearch += `.folders[`+ startposition +`]`;
+                pathSearch += `.folders[0]`
+                key="compareFiles";
+                break;
+            case "nextFolder":
+                let folderposition = pathSearch.charAt(currentPathcopy.length - 2);
+                let nextfolderposition = parseInt(folderposition) + 1;
+                pathSearch.slice(0, -11);
+                pathSearch += `.folders[`+ nextfolderposition +`]`;
+                key = "compareFiles";
+                break;
+        }
+    }
+    alert("my code: "+mycodetorun)
+    return mycodetorun;
 }
