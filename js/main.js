@@ -305,7 +305,6 @@ function ls(option) {
 
 function setSize() {
     let currentPathcopy = currentPath; //copio la ruta desde donde se ha llamado a la funcion
-    let directoryTreeCopy = eval(currentPathcopy);
 
     let goto_variable = "goinginfolders";
     let var_continue = true;
