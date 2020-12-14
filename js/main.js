@@ -2,16 +2,12 @@
 localStorage.setItem("commands",JSON.stringify(["pwd", "ls", "cd", "cd..", "mkdir", "echo", "cat", "rm", "mv", "clear"]));
 localStorage.setItem("history",JSON.stringify([]));
 
-<<<<<<< HEAD
-var path="/root";//a dinamic string where to store the currett work folder
-=======
 
 
 
 
 
 var path="Root";//a dinamic string where to store the currett work folder
->>>>>>> master
 let currentPath = 'directoryTree';
 
 let directoryTree = {
@@ -60,8 +56,8 @@ function checkValidCommand(){
             console.log("Invalid command madafaka, try again");
         }
         else{
-            cd(stringInWords[2]);
-            saveInHistory();
+        cd(stringInWords[2]);
+        saveInHistory();
         }
         break;
     case "cd..":
@@ -82,17 +78,23 @@ function checkValidCommand(){
         saveInHistory();
         
         break;
+    case "ls":
+        ls(stringInWords[2])
+        saveInHistory();
+        break;
     default:
         console.log("Invalid command madafaka, try again");
         //document.getElementById(contador).value="";
-    }   
+    }
+}
+
 //commands functions
 function pwd() {
+    console.log("entro en pwd");
     alert("You are in "+path);
 }
 
 function cd(whereToMove){
-<<<<<<< HEAD
     console.log("entro a cd")
     var flag=true;
     eval(currentPath).folders.forEach((x,i)=>{
@@ -105,7 +107,6 @@ function cd(whereToMove){
     if (flag){
         console.log("esa carpeta no existe")
     }
-=======
     path+=('/'+whereToMove)
     eval(currentPath).folders.forEach((x,i)=>{
         if (x.name === whereToMove) {
@@ -115,11 +116,9 @@ function cd(whereToMove){
         }
     })
     path+=("/"+whereToMove)
->>>>>>> master
 }
 
 function cd2() {
-    //Instructions to change "path"
     var pathInWords=path.split('/');
     pathInWords.shift();
     pathInWords.pop();
@@ -183,23 +182,93 @@ function echo(commandline) {
     }
 }
 
-function ls(option) {
-    //localStorage.getItem("directoryTree");
+function lsCommand(dirToList) {
+    console.log(dirToList)
     let listToShow = [];
-    for (let index = 0; index < directoryTree.files.length; index++) {
-        listToShow.push(directoryTree.files[index].name);
+    for (let index = 0; index < eval(dirToList).files.length; index++) {
+        listToShow.push(eval(dirToList).files[index].name);
     }
-    for (let index = 0; index < directoryTree.folder.length; index++) {
-        listToShow.push(directoryTree.folder[index].name);
+    for (let index = 0; index < eval(dirToList).folders.length; index++) {
+        listToShow.push(eval(dirToList).folders[index].name);
     }
-    document.getElementById(contador).innerHTML = listToShow.join(" ");
+        newtextArea();
+        document.getElementById(contador).value = listToShow.join(" ");
+        return listToShow;
+}
+
+function ls(option) {
+
+    if (option == undefined) {
+        lsCommand(currentPath);
+    }
 
     /* Option R */
     if (option == "-R") {
-    newtextArea();
-        }
+        let currentPathcopy = currentPath; //copio la ruta desde donde se ha llamado a la funcion
+        let directoryTreeCopy = eval(currentPathcopy);
+
+        console.log(currentPathcopy);
+        console.log(directoryTreeCopy);
+
+        lsCommand(currentPathcopy); // listo la ruta -> imprimo carpetas y archivos que haya en el directorio actual
+
+        let goto_variable = "goinginfolders";
+        let var_continue = true;
+
+        while (currentPathcopy.length >= currentPath.length && var_continue== true) //
+{
+    switch (goto_variable)
+    {
+        case "goinginfolders": 
+            while (eval(currentPathcopy).folders.length > 0) { // si hay carpetas me meto en la primera y hago ls
+                    currentPathcopy += `.folders[0]`;
+                    console.log(currentPathcopy);
+
+                    lsCommand(currentPathcopy);
+                    document.getElementById(contador).value = " " + eval(currentPathcopy).name + ": " + document.getElementById(contador).value
+            }
+            if (eval(currentPathcopy).folders.length == 0) { //cuando no haya carpeta
+                //entro en una carpeta que no hay carpetas 111
+                console.log(eval(currentPathcopy).name);
+                goto_variable = "readPositionFolder";
+            }
+            break;
+
+        case "readPositionFolder":
+            let lastfolderposition = currentPathcopy.charAt(currentPathcopy.length - 2);
+            let nextfolderposition = parseInt(lastfolderposition) + 1;
+            console.log(eval(currentPathcopy).name);
+            currentPathcopy = currentPathcopy.slice(0, -11); //voy al nivel superior
+            console.log(eval(currentPathcopy).name);
+            if (nextfolderposition < eval(currentPathcopy).folders.length) {  //si el numero de carpetas de ese nivel es mayor a la posicion de la ultima
+                currentPathcopy += `.folders[`+ nextfolderposition +`]`;
+                    console.log(currentPathcopy)
+                    lsCommand(currentPathcopy);
+                    document.getElementById(contador).value = " " + eval(currentPathcopy).name + ": " + document.getElementById(contador).value
+                    goto_variable = "goinginfolders";
+            } else if (currentPathcopy.length > currentPath.length) {
+                console.log(currentPathcopy.length);
+                console.log(currentPath.length);
+                console.log(eval(currentPathcopy).name);
+                console.log(eval(currentPath).name);
+                goto_variable = "readPositionFolder";
+            } else {
+                var_continue = false;
+                break;
+            }
     }
-} function rm(string){
+}
+    }
+
+
+    /* OPCION S */
+    if (option == "-S") {
+        let listToSort = lsCommand(currentPath);
+        console.log(listToSort);
+    }
+}
+            
+function rm(string){
     console.log(string);
     switch(string[2]){
         case '-r': 
@@ -210,7 +279,5 @@ function ls(option) {
             break
         default:
             console.log('estas en default');
-
-
     }
 }
