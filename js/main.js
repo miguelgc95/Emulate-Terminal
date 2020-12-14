@@ -137,7 +137,8 @@ function mkdir(name){
         name : name,
         time : time,
         folders : [],
-        files : []
+        files : [], 
+        size : 0
     }
     eval(currentPath).folders.push(myObj);
 }
@@ -207,9 +208,6 @@ function ls(option) {
         let currentPathcopy = currentPath; //copio la ruta desde donde se ha llamado a la funcion
         let directoryTreeCopy = eval(currentPathcopy);
 
-        console.log(currentPathcopy);
-        console.log(directoryTreeCopy);
-
         lsCommand(currentPathcopy); // listo la ruta -> imprimo carpetas y archivos que haya en el directorio actual
 
         let goto_variable = "goinginfolders";
@@ -263,9 +261,100 @@ function ls(option) {
 
     /* OPCION S */
     if (option == "-S") {
+        setSize();
+        let listToSort = [];
+        let nameSorts = [];
+        
+        for (let index = 0; index < eval(currentPath).folders.length; index++) {
+            listToSort.push(eval(currentPath).folders[index]);
+        }
+        console.log(listToSort);
+
+        listToSort.sort(function (a, b) {
+            if (a.size < b.size) {
+              return 1;
+            }
+            if (a.size > b.size) {
+              return -1;
+            }
+            // a must be equal to b
+            return 0;
+          });
+
+          listToSort.forEach(element => {
+            nameSorts.push(element.name);
+          });
+
+        for (let index = 0; index < eval(currentPath).files.length; index++) {
+            nameSorts.push(eval(currentPath).files[index].name);
+        }
+
+        newtextArea();
+        document.getElementById(contador).value = nameSorts.join(" ");
+    }
+
+
+    /* OPCION t */
+    if (option == "-t") {
+        let itemsToSort = [];
+          
         let listToSort = lsCommand(currentPath);
         console.log(listToSort);
     }
+}
+
+function setSize() {
+    let currentPathcopy = currentPath; //copio la ruta desde donde se ha llamado a la funcion
+    let directoryTreeCopy = eval(currentPathcopy);
+
+    let goto_variable = "goinginfolders";
+    let var_continue = true;
+
+    let size = 0;
+
+    while (currentPathcopy.length >= currentPath.length && var_continue== true) //
+{
+switch (goto_variable)
+{
+    case "goinginfolders": 
+        while (eval(currentPathcopy).folders.length > 0) { // si hay carpetas me voy metiendo hasta que llegue a una que no tenga carpetas dentro
+                currentPathcopy += `.folders[0]`;
+        }
+        if (eval(currentPathcopy).folders.length == 0) { //cuando no haya carpeta
+            //entro en una carpeta que no hay carpetas y cuento los archivos que tiene
+            eval(currentPathcopy).size = eval(currentPathcopy).files.length;
+            goto_variable = "readPositionFolder";
+        }
+        break;
+
+    case "readPositionFolder":
+        let lastfolderposition = currentPathcopy.charAt(currentPathcopy.length - 2);
+        let nextfolderposition = parseInt(lastfolderposition) + 1;
+        if (currentPathcopy.length > currentPath.length) {
+            currentPathcopy = currentPathcopy.slice(0, -11);
+        } //voy al nivel superior
+
+        if (nextfolderposition < eval(currentPathcopy).folders.length) {  //si el numero de carpetas de ese nivel es mayor a la posicion de la ultima
+            currentPathcopy += `.folders[`+ nextfolderposition +`]`;
+            goto_variable = "goinginfolders";
+        } else if  (nextfolderposition >= eval(currentPathcopy).folders.length){
+            eval(currentPathcopy).size = 0;
+            for (let index = 0; index < eval(currentPathcopy).folders.length; index++) {
+                eval(currentPathcopy).size = eval(currentPathcopy).size + eval(currentPathcopy).folders[index].size;
+            }
+            eval(currentPathcopy).size = eval(currentPathcopy).size + eval(currentPathcopy).files.length;
+            goto_variable = "readPositionFolder";
+        } 
+        if (currentPathcopy.length <= currentPath.length) {
+            var_continue = false;
+        }
+        console.log(var_continue);
+        break;
+}
+}
+console.log(eval(currentPathcopy));
+currentPath = currentPathcopy;
+//directoryTree = eval(currentPathcopy);
 }
             
 function rm(string){
