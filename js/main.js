@@ -2,12 +2,6 @@
 localStorage.setItem("commands",JSON.stringify(["pwd", "ls", "cd", "cd..", "mkdir", "echo", "cat", "rm", "mv", "clear"]));
 localStorage.setItem("history",JSON.stringify([]));
 
-
-
-
-
-
-var path="Root";//a dinamic string where to store the currett work folder
 let currentPath = 'directoryTree';
 
 let directoryTree = {
@@ -41,74 +35,157 @@ function saveInHistory(){
     var historyArray = JSON.parse(localStorage.getItem("history"));
     historyArray.push(document.getElementById(contador).value);
     localStorage.setItem("history",JSON.stringify(historyArray));
-    //document.getElementById(contador).value="";
 }
 
 function checkValidCommand(){
     var stringInWords=document.getElementById(contador).value.split(' ');
     switch(stringInWords[1]){
     case "pwd":
-        pwd();
         saveInHistory();
+        pwd();
         break;
     case "cd":
-        cd(stringInWords[2]);
-        saveInHistory();
-        break;
-    case "cd..":
-        cd2();
-        saveInHistory();
+        cd(stringInWords);
         break;
     case "echo":
         echo(stringInWords);
         setLocalStorage()
         break;
     case "mkdir":
-        mkdir(stringInWords[2])
         saveInHistory();
+        mkdir(stringInWords[2])
         setLocalStorage()
         break;
     case "rm":
-        rm(stringInWords)
         saveInHistory();
-        
+        rm(stringInWords)
+        break;
+    case "cat":
+        saveInHistory();
+        cat(stringInWords[2]);
         break;
     case "ls":
         ls(stringInWords[2])
         saveInHistory();
         break;
     default:
+
         console.log("Invalid command madafaka, try again");
         //document.getElementById(contador).value="";
     }
 }
+        newtextArea();
+        document.getElementById(contador).value="Invalid command madafaka, try again";
+    }
 
 //commands functions
 function pwd() {
-    console.log("entro en pwd");
-    alert("You are in "+path);
+    newtextArea();
+    document.getElementById(contador).value="You are in: "+path;
 }
 
-function cd(whereToMove){
-    path+=('/'+whereToMove)
-    eval(currentPath).folders.forEach((x,i)=>{
-        if (x.name === whereToMove) {
-            currentPath += `.folders[${i}]`
-            console.log(currentPath);
+function cd(stringInWords){
+    saveInHistory();
+    if(stringInWords.length===2){
+        emptyCD();
+    }
+    else if(stringInWords[2]===".."){
+        cd2();
+    }
+    else if(stringInWords[2][0]!="/"){
+        relativeCD(stringInWords[2]);
+    }
+    else if(stringInWords[2][0]==="/"){
+        absoluteCD(stringInWords[2]);
+    }
+    else{
+        console.log("invalid command")
+    }
+}
 
-        }
-    })
-    path+=("/"+whereToMove)
+function emptyCD(){
+    path="/root";
+    currentPath = 'directoryTree';
 }
 
 function cd2() {
-    var pathInWords=path.split(' ');
-    pathInWords.pop()
+    //Instructions to change "path"
+    var pathInWords=path.split('/');
+    pathInWords.shift();
+    pathInWords.pop();
+    path=""
+    pathInWords.forEach(element => {
+        path+="/"+element;
+    });
+    //instructions to change "currentPath"
+    currentPath=currentPath.slice(0,currentPath.length-11);
+}
+
+function relativeCD(whereToMove){
+    var flag=true;
+    eval(currentPath).folders.forEach((x,i)=>{
+        if (x.name === whereToMove) {
+            currentPath += `.folders[${i}]`;
+            path+=('/'+whereToMove)
+            flag=false;
+        }
+    })
+    if (flag){
+        newtextArea();
+        document.getElementById(contador).value="folder doesn't exist";
+    }
+}
+
+function absoluteCD(whereToMove){
+    var whereToMoveInWords=whereToMove.split("/");
+    whereToMoveInWords.shift();
+    whereToMoveInWords.shift();
+    whereToMoveInWords.unshift("root");
+    var pathAux="";
+    var currentPathAux="directoryTree";
+    var metaFlag=false;
+    for(i=0;i<whereToMoveInWords.length-1;i++){
+        var flag=true;
+        for(j=0;j<eval(currentPathAux).folders.length;j++){
+            if(eval(currentPathAux).folders[j].name===whereToMoveInWords[i+1]){
+                flag=false;
+                pathAux+="/"+whereToMoveInWords[i];
+                currentPathAux+=`.folders[${j}]`;
+                break;
+            }
+        }
+        if(flag){
+            newtextArea();
+            document.getElementById(contador).value="The path doesn't exist";
+            break;
+        }
+        else{
+            metaFlag=true;
+        }
+    }
+    if(metaFlag){
+        path=`${pathAux}/${whereToMoveInWords[whereToMoveInWords.length-1]}`;
+        currentPath=currentPathAux;
+    }
+}
+
+function cat(fileToOpen){
+    var flag=true;
+    eval(currentPath).files.forEach(element => {
+        if (element.name===fileToOpen){
+            newtextArea();
+            document.getElementById(contador).value=element.content;
+            flag=false
+        }
+    });
+    if(flag){
+        newtextArea();
+        document.getElementById(contador).value="file doesn't exist";
+    }
 }
 
 function mkdir(name){
     let time = new Date().getTime()
-    // console.log(time);
     let myObj ={
         name : name,
         time : time,
@@ -117,7 +194,6 @@ function mkdir(name){
     }
     eval(currentPath).folders.push(myObj);
 }
-
 
 function echo(commandline) {
 
@@ -237,14 +313,14 @@ function ls(option) {
 }
     }
 }
-            
+
 function rm(string){
     console.log(string);
     switch(string[2]){
-        case '-r': 
+        case '-r':
             console.log('estas en -r');
             break
-        case '-d': 
+        case '-d':
             console.log('estas en -d');
             break
         default:
