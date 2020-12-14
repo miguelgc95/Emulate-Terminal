@@ -67,26 +67,23 @@ function setCursorWhenClick() {
 	setCursorPosition(document.getElementById(contador), document.getElementById(contador).value.length);
 }
 
-function moveOnHistory(e){
-	var h=JSON.parse(localStorage.getItem("history"));
+function moveOnHistory(e) {
+	var h = JSON.parse(localStorage.getItem("history"));
 	//keyCode===38 es flecha arriba,keyCode===40 es pabajo
-	if (e.keyCode==38 || e.keyCode==40){
+	if (e.keyCode == 38 || e.keyCode == 40) {
 		e.preventDefault();
 	}
-    if(e.keyCode==38 && keyCounter<h.length){
-		console.log("entroo");
-		keyCounter+=1;
-		var hh=h[h.length-keyCounter]
-		document.getElementById(contador).value=hh;
-    }
-    else if (e.keyCode==40 && keyCounter>0){
-		keyCounter-=1;
-		var hh=h[h.length-keyCounter];
-		if(keyCounter===0){
-		console.log("entroo");
-		hh=h[h.length-keyCounter-1];
+	if (e.keyCode == 38 && keyCounter < h.length) {
+		keyCounter += 1;
+		var hh = h[h.length - keyCounter]
+		document.getElementById(contador).value = `[${path}]$ `+hh;
+	} else if (e.keyCode == 40 && keyCounter > 0) {
+		keyCounter -= 1;
+		var hh = h[h.length - keyCounter];
+		if (keyCounter === 0) {
+			hh = h[h.length - keyCounter - 1];
 		}
-		document.getElementById(contador).value=hh;
+		document.getElementById(contador).value = `[${path}]$ `+hh;
 	}
 }
 

@@ -33,7 +33,9 @@ function setLocalStorage(){
 
 function saveInHistory(){
     var historyArray = JSON.parse(localStorage.getItem("history"));
-    historyArray.push(document.getElementById(contador).value);
+    var newCommandToSave = document.getElementById(contador).value.slice(path.length+4);
+    console.log(newCommandToSave, path.length);
+    historyArray.push(newCommandToSave);
     localStorage.setItem("history",JSON.stringify(historyArray));
 }
 
