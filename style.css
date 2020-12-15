@@ -100,7 +100,7 @@ section {
     font-size: 13.3333px;
     line-height: normal;
     font-family: monospace;
-    padding: 0 5px;
+    padding: 0 0px;
 }
 h2:first-child{
     margin-top: 0;
@@ -119,4 +119,15 @@ p {
     color: rgb(255, 255, 111);
     padding: 2px;
     width: max-content;
+}
+
+/*      THEME TERMINAL CSS AREA          */
+#textsArea-container-wrapper{
+    margin-top: 8%;
+}
+.barra_aplicacion, .barra_herramientas{
+    background-color: #777777;
+    height: 2em;
+    width: 100%;
+    border: 1px solid #fff;
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
     <title>Brwoser terminal</title>
 
     <script src="js/step1.js" defer></script>
@@ -11,9 +11,13 @@
     <script src="js/keyboard.js" defer></script>
 </head>
 <body id="body">
-    <section id="textsArea-container">
-        <!-- <textarea name="line1" id="1" cols="100" rows="1">~$</textarea> -->
+    <section id="textsArea-container-wrapper">
+        <div class="barra_aplicacion">barra 1</div>
+        <div class="barra_herramientas">barra herramientas</div>
+        <div id="textsArea-container">
+        </div>
     </section>
+
     <section id="pwd">
         <h2 class="command-Name-title">NAME</h2>
         <p class="command-Name-descrip">pwd - print name of current/working directory</p>
