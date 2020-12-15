@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/fe79458665.js" crossorigin="anonymous"></script>
     <title>Brwoser terminal</title>
 
     <script src="js/step1.js" defer></script>
@@ -12,8 +13,21 @@
 </head>
 <body id="body">
     <section id="textsArea-container-wrapper">
-        <div class="barra_aplicacion">barra 1</div>
-        <div class="barra_herramientas">barra herramientas</div>
+        <div class="barra_aplicacion">
+            <i id="terminal-icon" class="fas fa-terminal"></i>
+            Browser-Terminal-Simulator
+            <div id="cross">
+                <i id="x" class="far fa-times-circle"></i>
+            </div>
+        </div>
+        <div class="toolBar">
+            <div class="archivo_tool"><p>Archivo</p></div>
+            <div class="editar_tool"><p>Editar</p></div>
+            <div class="ver_tool"><p>Ver</p></div>
+            <div class="terminal_tool"><p>Terminal</p></div>
+            <div class="pestañas_tool"><p>Pestañas</p></div>
+            <div class="ayuda_tool"><p>Ayuda</p></div>
+        </div>
         <div id="textsArea-container">
         </div>
     </section>
