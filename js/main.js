@@ -101,6 +101,10 @@ function checkValidCommand(){
             JSCommand(stringInWords[2])
             saveInHistory();
             break;
+        case "mv":
+            mv(stringInWords)
+            saveInHistory();
+            break;
         default:
             newtextArea();
             document.getElementById(contador).value="Invalid command madafaka, try again";
@@ -668,7 +672,8 @@ function clear(){
 
 }
 function getAbsolutePath(str){
-    console.log(str);
+    
+    
     let absPath = 'directoryTree.folders'
     let index = 0
     
@@ -767,6 +772,36 @@ function rm(string){
 
 
 
+}
+function mv(string){
+
+    
+    switch (string[2]) {
+        case '-f':
+            let move = getAbsolutePath(string[3])
+            let destiny = getAbsolutePath(string[4])
+
+            let getArray = `${move[0]}[${move[1]}]`
+            //let array = eval(getArray)
+            const clon =getArray
+
+            console.log(clon);
+
+            console.log(destiny[0]);
+
+            eval(destiny[0]).push(eval(clon))
+            //destiny.push(clon)
+
+            //directoryTree.folders[1].folders.push(directoryTree.folders[0].folders[0])
+
+           //  eval(move[0]).splice(move[1],move[1]+1)
+            // eval(destiny[0])
+            setLocalStorage()
+            break;
+    
+        default:
+            break;
+    }
 }
 
 
