@@ -462,15 +462,24 @@ currentPath = currentPathcopy;
 }
 
 function man (command) {
-    document.getElementById("textsArea-container").style.display = "none";
-    document.getElementById(command).style.display = "block";
-    
-    window.onkeypress = function(e) {
-        if (e.keyCode == 113) {
-            document.getElementById("textsArea-container").style.display = "flex";
-            document.getElementById(command).style.display = "none";
+    let manCommand = ["pwd","ls","echo","cat","mkdir","pwd","mv", "clear"];
+    let validCommand = false;
+    manCommand.forEach(element => {
+        if (command == element ) {
+            document.getElementById("textsArea-container").style.display = "none";
+            document.getElementById(command).style.display = "block";
+            validCommand = true;
+            window.onkeypress = function(e) {
+            if (e.keyCode == 113) {
+                document.getElementById("textsArea-container").style.display = "flex";
+                document.getElementById(command).style.display = "none";
+            }};
         }
-    };
+        });
+        if (validCommand == false) {
+            newtextArea();
+            document.getElementById(contador).value = "There is no information about " + command + " command."
+        };
 }
             
 function rm(string){
