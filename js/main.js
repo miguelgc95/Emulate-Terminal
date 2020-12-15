@@ -1,14 +1,10 @@
 //data manage
 localStorage.setItem("commands",JSON.stringify(["pwd", "ls", "cd", "cd..", "mkdir", "echo", "cat", "rm", "mv", "clear"]));
-localStorage.setItem("history",JSON.stringify([]));
 
 
-
-
-
-
-var path="Root";//a dinamic string where to store the currett work folder
 let currentPath = 'directoryTree';
+
+let history = []
 
 let directoryTree = {
     folders : [],
@@ -27,68 +23,87 @@ getLocalStorage()
 function getLocalStorage(){
     if (localStorage.getItem('root') === null) {
         localStorage.setItem('root',JSON.stringify(directoryTree))
-        console.log('lo creo');
+        
     }else{
         directoryTree = JSON.parse(localStorage.getItem('root'))
-        console.log('lo cojo');
+      
+    }
+    if (localStorage.getItem('history') === null) {
+        localStorage.setItem('history',JSON.stringify(history))
+        
+    }else{
+    
+        history = JSON.parse(localStorage.getItem('history'))
+      
     }
 }
 function setLocalStorage(){
     localStorage.setItem('root',JSON.stringify(directoryTree))
+    localStorage.setItem('history',JSON.stringify(history))
+
 }
 
 function saveInHistory(){
-    var historyArray = JSON.parse(localStorage.getItem("history"));
+    // var historyArray = JSON.parse(localStorage.getItem("history"));
     var newCommandToSave = document.getElementById(contador).value.slice(path.length+4);
-    console.log(newCommandToSave, path.length);
-    historyArray.push(newCommandToSave);
-    localStorage.setItem("history",JSON.stringify(historyArray));
+    history.push(newCommandToSave);
+    // localStorage.setItem("history",JSON.stringify(historyArray));
+    setLocalStorage()
+
 }
 
 function checkValidCommand(){
     var stringInWords=document.getElementById(contador).value.split(' ');
     switch(stringInWords[1]){
-    case "pwd":
-        saveInHistory();
-        pwd();
-        break;
-    case "cd":
-        cd(stringInWords);
-        break;
-    case "echo":
-        echo(stringInWords);
-        setLocalStorage()
-        break;
-    case "mkdir":
-        saveInHistory();
-        mkdir(stringInWords[2])
-        setLocalStorage()
-        break;
-    case "rm":
-        saveInHistory();
-        rm(stringInWords)
-        break;
-    case "cat":
-        saveInHistory();
-        cat(stringInWords[2]);
-        break;
-    case "ls":
-        ls(stringInWords[2])
-        saveInHistory();
-        break;
-    case "man":
-        man(stringInWords[2])
-        saveInHistory();
-        break;
-    case "JS":
-        JSCommand(stringInWords[2])
-        saveInHistory();
-        break;
-    default:
-        console.log("Invalid command madafaka, try again");
-        //document.getElementById(contador).value="";
-        newtextArea();
-        document.getElementById(contador).value="Invalid command madafaka, try again";
+        case "pwd":
+            saveInHistory();
+            pwd();
+            break;
+        case "cd":
+            cd(stringInWords);
+            break;
+        case "echo":
+            saveInHistory();
+            echo(stringInWords);
+            setLocalStorage()
+            break;
+        case "mkdir":
+            saveInHistory();
+            mkdir(stringInWords[2])
+            setLocalStorage()
+            break;
+        case "rm":
+            saveInHistory();
+            rm(stringInWords)
+            setLocalStorage()
+            break;
+        case "cat":
+            saveInHistory();
+            cat(stringInWords[2]);
+            break;
+        case "ls":
+            saveInHistory();
+            ls(stringInWords[2])
+            break;
+        case "help":
+            saveInHistory();
+            help(stringInWords);
+            break;
+        case "clear":
+            saveInHistory();
+            clear();
+            break;
+        case "man":
+            saveInHistory();
+            man(stringInWords[2]);
+            break;
+        case "JS":
+            JSCommand(stringInWords[2])
+            saveInHistory();
+            break;
+        default:
+            newtextArea();
+            document.getElementById(contador).value="Invalid command madafaka, try again";
     }
 }
 
@@ -278,8 +293,7 @@ function ls(option) {
         let goto_variable = "goinginfolders";
         let var_continue = true;
 
-        while (currentPathcopy.length >= currentPath.length && var_continue== true) //
-{
+        while (currentPathcopy.length >= currentPath.length && var_continue== true){
     switch (goto_variable)
     {
         case "goinginfolders": 
@@ -323,13 +337,11 @@ function ls(option) {
 }
     }
 
-
     /* OPCION S */
     if (option == "-S") {
         setSize();
         let listToSort = [];
         let nameSorts = [];
-        
         for (let index = 0; index < eval(currentPath).folders.length; index++) {
             listToSort.push(eval(currentPath).folders[index]);
         }
@@ -471,6 +483,7 @@ function rm(string){
     }
 }
 
+
 function JSCommand(jsDocumentName) {
     let myHTML = document.getElementById("body").innerHTML;
     searchFile(jsDocumentName);
@@ -538,3 +551,222 @@ function searchFile(jsDocumentName) {
     alert("my code: "+mycodetorun)
     return mycodetorun;
 }
+
+function help(stingInWords){
+    console.log(stingInWords);
+    if(stingInWords.length>3){
+        newtextArea();
+        document.getElementById(contador).value="Invalid command madafaka, try again";
+    }
+    else if(stingInWords.length===3){
+        specificHelp(stingInWords[2])
+    }
+    else if(stingInWords.length===2){
+        newtextArea();
+        var helpText=" Browser terminal develop with assembler.";
+        document.getElementById(contador).value=helpText;
+        newtextArea( );
+        helpText=" These shell commands are simulation of interacting with a SO terminal.";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText=" Type 'help name' to find out more about the command 'name'.";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText=" Use 'man' to more detailed explanarion.";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText=" List of avaliable commands:";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  cd [] [..] [relativepath] [absolutepath]";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  echo []";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  pwd []";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  ls []";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  mkdir []";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  cat []";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  rm []";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  mv []";
+        document.getElementById(contador).value=helpText;
+        newtextArea();
+        helpText="  clear []";
+        document.getElementById(contador).value=helpText;
+    }
+    else{
+        alert("bug")
+    }
+}
+
+function specificHelp(commandToHelp) {
+    console.log(commandToHelp);
+    switch(commandToHelp){
+        case "pwd":
+            newtextArea();
+            var helpText="  fot a detailed information type 'man pwd'";
+            document.getElementById(contador).value=helpText;
+            break;
+        case "cd":
+            newtextArea();
+            helpText="  fot a detailed information type 'man cd'";
+            document.getElementById(contador).value=helpText;
+            break;
+        case "echo":
+            newtextArea();
+            helpText="  fot a detailed information type 'man echo'";
+            document.getElementById(contador).value=helpText;
+            break;
+        case "mkdir":
+            newtextArea();
+            helpText="  fot a detailed information type 'man mkdir'";
+            document.getElementById(contador).value=helpText;
+            break;
+        case "rm":
+            newtextArea();
+            helpText="  fot a detailed information type 'man rm'";
+            document.getElementById(contador).value=helpText;
+            break;
+        case "cat":
+            newtextArea();
+            helpText="  fot a detailed information type 'man cat'";
+            document.getElementById(contador).value=helpText;
+            break;
+        case "ls":
+            newtextArea();
+            helpText="  fot a detailed information type 'man ls'";
+            document.getElementById(contador).value=helpText;
+            break;
+        default:
+            newtextArea();
+            document.getElementById(contador).value="Invalid command, please try again";
+    }
+}
+// Command Clear
+
+function clear(){
+    let $textAreas = document.querySelectorAll('textarea')
+
+    $textAreas.forEach(e => {
+            e.remove()
+    });
+
+
+}
+function getAbsolutePath(str){
+    console.log(str);
+    let absPath = 'directoryTree.folders'
+    let index = 0
+    
+    strSplit = str.split('/')
+    
+    strSplit.forEach((e,i) => {
+        eval(absPath).forEach((el,ind) => {
+            if (e === el.name) {
+                if (i < strSplit.length-1) {
+                    absPath += `[${ind}].folders`       
+                }
+                index = ind
+            }
+        });
+    });
+    let ret = [absPath,index]
+    return ret
+}
+function rm(string){
+    
+    let routeDel = string[3]
+
+    if (routeDel.includes('/')) {
+        //reuta absoluta
+        let info = getAbsolutePath(routeDel)
+        console.log(info);
+        switch (string[2]) {
+            case '-r':
+                eval(info[0]).splice(info[1],info[1]+1)
+
+                break;
+            case '-R':
+                eval(info[0]).splice(info[1],info[1]+1)
+
+                break;
+            case '-d':               
+                    eval(info[0]).splice(info[1],info[1]+1)
+     
+                break;
+                
+            default:
+                newtextArea()
+                document.getElementById(contador).value="The extension of this command doesn't exist"
+                break;
+        }
+
+    }else{
+        //ruta relativa
+        switch (string[2]) {
+            case '-r':
+                currentPath += '.folders'
+                let x = false
+                eval(currentPath).forEach((e,i) => {
+                    if (e.name === routeDel) {
+                        eval(currentPath).splice(i,i+1)
+                        x = true
+                    }
+                    if (!x) {
+                        newtextArea()
+                        document.getElementById(contador).value="This folder doesn't exist"
+                    }
+                });    
+                break;
+            case '-R':
+                currentPath += '.folders'
+                
+                eval(currentPath).forEach((e,i) => {
+                    if (e.name === routeDel) {
+                        eval(currentPath).splice(i,i+1)
+                    }
+                });    
+                break;
+            case '-d':
+                if (eval(currentPath).folders.length>0 || eval(currentPath).files.length>0) {
+                    newtextArea()
+                    document.getElementById(contador).value='This is not an empty directory'
+                }else{
+                    currentPath += '.folders'
+                    console.log(currentPath);
+                    console.log(routeDel);
+                    eval(currentPath).forEach((e,i) => {
+                        if (e.name === routeDel) {
+                            eval(currentPath).splice(i,i+1)
+                        }
+                    });       
+                }
+                break;
+            
+            default:
+                newtextArea()
+                document.getElementById(contador).value="The extension of this command doesn't exist"
+                break;
+        }
+
+    }
+
+
+
+}
+
+
